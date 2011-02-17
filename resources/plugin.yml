@@ -39,3 +39,13 @@ commands:
                 Usage of /location
                 /location
                 /location [player]
+
+    config:
+        description: save or load the configuration
+        usage:  |
+                Usage of /config
+                /config save
+                /config load
+                /config add [key] [value]
+                /config set [key] [value]
+                /config get [key]

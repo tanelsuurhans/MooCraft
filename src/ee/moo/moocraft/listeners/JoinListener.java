@@ -9,11 +9,11 @@ import org.bukkit.plugin.Plugin;
  * User: Tanel Suurhans
  * Date: 2/16/11
  */
-public class PlayerJoinListener extends PlayerListener {
+public class JoinListener extends PlayerListener {
 
     private Plugin plugin;
 
-    public PlayerJoinListener(Plugin plugin) {
+    public JoinListener(Plugin plugin) {
         this.plugin = plugin;
     }
 

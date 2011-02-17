@@ -2,12 +2,15 @@ package ee.moo.moocraft;
 
 import ee.moo.moocraft.command.AbstractCommand;
 import ee.moo.moocraft.command.CommandHandler;
-import ee.moo.moocraft.listeners.PlayerJoinListener;
+import ee.moo.moocraft.listeners.ChatListener;
+import ee.moo.moocraft.listeners.FireListener;
+import ee.moo.moocraft.listeners.JoinListener;
 import ee.moo.moocraft.util.StringUtil;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
@@ -25,6 +28,10 @@ public class MooCraft extends JavaPlugin {
 
     private CommandHandler commandHandler = new CommandHandler();
 
+    private Listener joinListener = new JoinListener(this);
+    private Listener chatListener = new ChatListener(this);
+    private Listener fireListener = new FireListener(this);
+
     public MooCraft(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) {
         super(pluginLoader, instance, desc, folder, plugin, cLoader);
     }
@@ -35,8 +42,13 @@ public class MooCraft extends JavaPlugin {
 
     public void onEnable() {
 
-        this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, new PlayerJoinListener(this), Event.Priority.Normal, this);
+        this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, joinListener, Event.Priority.Normal, this);
+        this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_CHAT, chatListener, Event.Priority.Lowest, this);
 
+        this.getServer().getPluginManager().registerEvent(Event.Type.BLOCK_IGNITE, fireListener, Event.Priority.High, this);
+        this.getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BURN, fireListener, Event.Priority.High, this);
+
+        // autoload commands
         for (Object obj : ((LinkedHashMap) this.getDescription().getCommands()).keySet()) {
 
             String classKey  = (String) obj;

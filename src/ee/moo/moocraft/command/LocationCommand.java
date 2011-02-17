@@ -38,7 +38,7 @@ public class LocationCommand extends AbstractCommand {
             Integer y = location.getBlockY();
             Integer z = location.getBlockZ();
 
-            commandSender.sendMessage(ChatColor.GREEN + String.format("Your location is: %s:%s:%s", x, y, z));
+            commandSender.sendMessage(ChatColor.GREEN + String.format("%s location is: %s:%s:%s", target.getDisplayName(), x, y, z));
 
         } else {
 
