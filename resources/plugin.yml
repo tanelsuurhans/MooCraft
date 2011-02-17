@@ -11,15 +11,31 @@ commands:
         usage: /give [item] [amount] [player]
 
     teleport:
+        aliases: tp
         description: Teleports yourself or someone else
-        usage: /teleport [player] [destination]
+        usage:  |
+                Usage of /teleport:
+                /teleport [player]
+                /teleport [x:y:z]
+                /teleport [player] [player]
+                /teleport [player] [x:y:z]
 
     time:
         description: Set or show the current server time
         usage:  |
+                Usage of /time:
                 /time - Displays server time
                 /time day - Makes it daytime
                 /time night - Makes it nighttime
+
     playerlist:
+        aliases: pl
         description: Lists all online players
 
+    location:
+        aliases: loc
+        description: Show players location
+        usage:  |
+                Usage of /location
+                /location
+                /location [player]
