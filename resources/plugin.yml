@@ -1,0 +1,25 @@
+name: MooCraft
+main: ee.moo.moocraft.MooCraft
+version: 0.0.1
+website: http://github.com/tanelsuurhans
+author: Tanel Suurhans
+description:
+
+commands:
+    give:
+        description: Give yourself or someone else items
+        usage: /give [item] [amount] [player]
+
+    teleport:
+        description: Teleports yourself or someone else
+        usage: /teleport [player] [destination]
+
+    time:
+        description: Set or show the current server time
+        usage:  |
+                /time - Displays server time
+                /time day - Makes it daytime
+                /time night - Makes it nighttime
+    playerlist:
+        description: Lists all online players
+
