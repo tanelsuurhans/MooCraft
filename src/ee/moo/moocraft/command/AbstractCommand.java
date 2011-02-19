@@ -1,5 +1,6 @@
 package ee.moo.moocraft.command;
 
+import ee.moo.moocraft.configuration.ConfigurablePlugin;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
@@ -16,7 +17,17 @@ public abstract class AbstractCommand {
     }
 
     public abstract boolean execute(CommandSender commandSender, String command, String[] args) throws CommandException;
-    public abstract boolean isGameCommand();
-    public abstract boolean isConsoleCommand();
+
+    public boolean isOperatorCommand(String[] args) {
+        return false;
+    }
+
+    public boolean isGameCommand() {
+        return true;
+    }
+
+    public boolean isConsoleCommand() {
+        return true;
+    }
 
 }

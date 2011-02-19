@@ -31,13 +31,4 @@ public class PlayerlistCommand extends AbstractCommand {
         return true;
     }
 
-    @Override
-    public boolean isGameCommand() {
-        return true;
-    }
-
-    @Override
-    public boolean isConsoleCommand() {
-        return true;
-    }
 }

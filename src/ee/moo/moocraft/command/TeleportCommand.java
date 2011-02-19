@@ -20,10 +20,6 @@ public class TeleportCommand extends AbstractCommand {
     @Override
     public boolean execute(CommandSender commandSender, String command, String[] args) throws CommandException {
 
-        if (!commandSender.isOp()) {
-            throw new CommandException("You do not have permissions to use this command.");
-        }
-
         if (args.length == 0 || args.length > 2) {
             return false;
         }
@@ -121,12 +117,8 @@ public class TeleportCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean isGameCommand() {
+    public boolean isOperatorCommand(String[] args) {
         return true;
     }
 
-    @Override
-    public boolean isConsoleCommand() {
-        return true;
-    }
 }

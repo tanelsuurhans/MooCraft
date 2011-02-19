@@ -20,10 +20,6 @@ public class TimeCommand extends AbstractCommand {
     @Override
     public boolean execute(CommandSender commandSender, String command, String[] args) throws CommandException {
 
-        if (!commandSender.isOp()) {
-            throw new CommandException("You are not authorized to use this command.");
-        }
-
         Player sender = (Player) commandSender;
         Long time = sender.getWorld().getTime();
         Integer hours = (int) (time / 1000 + 8) % 24;
@@ -54,13 +50,14 @@ public class TimeCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean isGameCommand() {
-        return true;
-    }
+    public boolean isOperatorCommand(String[] args) {
 
-    @Override
-    public boolean isConsoleCommand() {
-        return false;
+        if (args.length == 1) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 }

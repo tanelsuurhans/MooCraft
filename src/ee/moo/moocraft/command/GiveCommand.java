@@ -20,11 +20,6 @@ public class GiveCommand extends AbstractCommand {
     @Override
     public boolean execute(CommandSender commandSender, String command, String[] args) throws CommandException {
 
-        /** TODO: remove to generic checks in CommandHandler */
-        if (!commandSender.isOp()) {
-            throw new CommandException("You are not authorized to use this command.");
-        }
-
         if (args.length == 0 || args.length > 3) {
             return false;
         }
@@ -70,13 +65,12 @@ public class GiveCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean isGameCommand() {
-        return true;
-    }
-
-    @Override
     public boolean isConsoleCommand() {
         return false;
     }
 
+    @Override
+    public boolean isOperatorCommand(String[] args) {
+        return true;
+    }
 }

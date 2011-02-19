@@ -1,7 +1,6 @@
 package ee.moo.moocraft.command;
 
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -24,7 +23,7 @@ public class CommandHandler {
         this.commands.put(key, command);
     }
 
-    public boolean dispatch(Command command, CommandSender sender, String[] args) {
+    public boolean dispatch(org.bukkit.command.Command command, CommandSender sender, String[] args) throws CommandException {
 
         AbstractCommand target = this.commands.get(command.getName());
 
@@ -33,7 +32,6 @@ public class CommandHandler {
         }
 
         if (sender instanceof Player && !target.isGameCommand()) {
-            // just pass through for now
             return true;
         }
 
@@ -41,13 +39,11 @@ public class CommandHandler {
             return true;
         }
 
-        try {
-            return target.execute(sender, command.getName(), args);
-        } catch(CommandException e) {
-            sender.sendMessage(ChatColor.RED + e.getMessage());
+        if (target.isOperatorCommand(args) && !sender.isOp()) {
+            throw new CommandException("You are not authorized to use this command");
         }
 
-        return false;
+        return target.execute(sender, command.getName(), args);
     }
 
     public void clearCommands() {

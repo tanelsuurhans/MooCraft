@@ -1,5 +1,6 @@
 package ee.moo.moocraft.listeners;
 
+import ee.moo.moocraft.configuration.ConfigurablePlugin;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockListener;
@@ -13,17 +14,21 @@ import static org.bukkit.Material.*;
  */
 public class FireListener extends BlockListener {
 
-    private Plugin plugin;
+    private ConfigurablePlugin plugin;
 
-    public FireListener(Plugin plugin) {
+    public FireListener(ConfigurablePlugin plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public void onBlockBurn(BlockBurnEvent event) {
 
-        if (event.getBlock().getType() == LEAVES) {
-            event.setCancelled(true);
+        if (!this.plugin.getConfigManager().isEnabled("fire.burn")) {
+
+            if (event.getBlock().getType() == LEAVES) {
+                event.setCancelled(true);
+            }
+
         }
         
     }
@@ -31,8 +36,12 @@ public class FireListener extends BlockListener {
     @Override
     public void onBlockIgnite(BlockIgniteEvent event) {
 
-        if (event.getCause() == BlockIgniteEvent.IgniteCause.SPREAD) {
-            event.setCancelled(true);
+        if (!this.plugin.getConfigManager().isEnabled("fire.spread")) {
+
+            if (event.getCause() == BlockIgniteEvent.IgniteCause.SPREAD) {
+                event.setCancelled(true);
+            }
+
         }
 
     }
