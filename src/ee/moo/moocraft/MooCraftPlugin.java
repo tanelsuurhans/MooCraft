@@ -28,7 +28,7 @@ import java.util.LinkedHashMap;
  * User: Tanel Suurhans
  * Date: 2/16/11
  */
-public class MooCraft extends ConfigurablePlugin {
+public class MooCraftPlugin extends ConfigurablePlugin {
 
     private CommandHandler commandHandler = new CommandHandler();
 
@@ -36,7 +36,7 @@ public class MooCraft extends ConfigurablePlugin {
     private Listener chatListener = new ChatListener(this);
     private Listener fireListener = new FireListener(this);
 
-    public MooCraft(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) {
+    public MooCraftPlugin(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) {
         super(pluginLoader, instance, desc, folder, plugin, cLoader);
     }
 

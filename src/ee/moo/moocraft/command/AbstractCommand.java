@@ -1,5 +1,6 @@
 package ee.moo.moocraft.command;
 
+import ee.moo.moocraft.MooCraftPlugin;
 import ee.moo.moocraft.configuration.ConfigurablePlugin;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;

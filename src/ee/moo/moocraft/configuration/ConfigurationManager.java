@@ -54,8 +54,28 @@ public class ConfigurationManager {
         return this.plugin.getConfiguration().getBoolean(key, false);
     }
 
+    public String booleanString(String key) {
+        return this.isEnabled(key) ? "enabled" : "disabled";
+    }
+
     public void reload() {
         this.plugin.getConfiguration().load();
+    }
+
+    public boolean save() {
+        return this.plugin.getConfiguration().save();
+    }
+
+    public Object get(String key) {
+        return this.plugin.getConfiguration().getProperty(key);
+    }
+
+    public void set(String key, Object value) {
+        try {
+            this.plugin.getConfiguration().setProperty(key, value);
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }

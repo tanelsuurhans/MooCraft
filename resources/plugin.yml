@@ -1,5 +1,5 @@
 name: MooCraft
-main: ee.moo.moocraft.MooCraft
+main: ee.moo.moocraft.MooCraftPlugin
 version: 0.0.1
 website: http://github.com/tanelsuurhans
 author: Tanel Suurhans
@@ -46,6 +46,15 @@ commands:
                 Usage of /config
                 /config save
                 /config load
-                /config add [key] [value]
-                /config set [key] [value]
                 /config get [key]
+
+    fire:
+        description: Enable or disable fire spread and burning
+        usage:  |
+                Usage of /fire
+                /fire burn [enable|disable]
+                /fire spread [enable|disable]
+                /fire [enable|disable]
+                /fire spread
+                /fire burn
+                /fire

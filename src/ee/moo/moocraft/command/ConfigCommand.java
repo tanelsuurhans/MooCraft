@@ -1,6 +1,8 @@
 package ee.moo.moocraft.command;
 
+import ee.moo.moocraft.MooCraftPlugin;
 import ee.moo.moocraft.configuration.ConfigurablePlugin;
+import ee.moo.moocraft.configuration.ConfigurationManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -11,7 +13,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class ConfigCommand extends AbstractCommand {
 
-    public ConfigCommand(ConfigurablePlugin plugin) {
+    public ConfigCommand(Plugin plugin) {
         super(plugin);
     }
 
@@ -19,16 +21,11 @@ public class ConfigCommand extends AbstractCommand {
         LOAD,
         SAVE,
         GET,
-        SET,
-        ADD
     }
 
     @Override
     public boolean execute(CommandSender commandSender, String command, String[] args) throws CommandException {
 
-        if (!commandSender.isOp()) {
-            throw new CommandException("You do not have permissions to use this command.");
-        }
 
         if (args.length > 3 || args.length < 1) {
             return false;
@@ -44,12 +41,6 @@ public class ConfigCommand extends AbstractCommand {
             case GET:
                 this.getConfig(commandSender, args);
                 break;
-            case SET:
-                this.setConfig(commandSender, args);
-                break;
-            case ADD:
-                this.addConfig(commandSender, args);
-                break;
             default:
                 return false;
         }
@@ -58,21 +49,25 @@ public class ConfigCommand extends AbstractCommand {
     }
 
     private void loadConfig(CommandSender sender) {
-        this.plugin.getConfiguration().load();
+
+        this.getConfigManager().reload();        
         sender.sendMessage(ChatColor.GREEN + "Configuration loaded.");
+
     }
 
     private void saveConfig(CommandSender sender) {
-        if (this.plugin.getConfiguration().save()) {
+
+        if (this.getConfigManager().save()) {
             sender.sendMessage(ChatColor.GREEN + "Configuration saved.");
         } else {
             sender.sendMessage(ChatColor.RED + "Configuration save failed.");
         }
+
     }
 
     private void getConfig(CommandSender sender, String[] args) {
 
-        Object value = this.plugin.getConfiguration().getProperty(args[1]);
+        Object value = this.getConfigManager().get(args[1]);
 
         if (value == null) {
             sender.sendMessage(ChatColor.RED + String.format("Property %s could not be found.", ChatColor.WHITE + args[1] + ChatColor.RED));
@@ -82,29 +77,12 @@ public class ConfigCommand extends AbstractCommand {
         
     }
 
-    private void setConfig(CommandSender sender, String[] args) throws CommandException {
-
-        if(args.length != 3) {
-            throw new CommandException("Invalid number of arguments");
-        }
-
-        this.plugin.getConfiguration().setProperty(args[1], args[2]);
-
-        sender.sendMessage(ChatColor.GREEN + String.format("Set %s value to %s", ChatColor.WHITE + args[1] + ChatColor.GREEN, ChatColor.WHITE + args[2] + ChatColor.GREEN));
-
-    }
-
-    private void addConfig(CommandSender sender, String[] args) {
-
+    private ConfigurationManager getConfigManager() {
+        return ((ConfigurablePlugin) this.plugin).getConfigManager();
     }
 
     @Override
-    public boolean isGameCommand() {
-        return true;
-    }
-
-    @Override
-    public boolean isConsoleCommand() {
+    public boolean isOperatorCommand(String[] args) {
         return true;
     }
 }
