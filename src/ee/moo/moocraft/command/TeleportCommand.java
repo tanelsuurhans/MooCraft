@@ -1,11 +1,11 @@
 package ee.moo.moocraft.command;
 
+import ee.moo.moocraft.MooCraft;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 /**
  * User: Tanel Suurhans
@@ -13,7 +13,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class TeleportCommand extends AbstractCommand {
 
-    public TeleportCommand(Plugin plugin) {
+    public TeleportCommand(MooCraft plugin) {
         super(plugin);
     }
 
@@ -31,45 +31,54 @@ public class TeleportCommand extends AbstractCommand {
                 throw new CommandException("You cannot use teleport from the console to teleport yourself.");
             }
 
+            Player target = (Player) commandSender;
+
             if (args[0].contains(":")) {
 
-                this.doTeleport((Player) commandSender, args[0].split(":"), commandSender);
+                this.teleportPlayer((Player) commandSender, args[0].split(":"), commandSender);
+
+            } else if (args[0].equals("ground")) {
+
+                Integer x = ((Player) commandSender).getLocation().getBlockX();
+                Integer z = ((Player) commandSender).getLocation().getBlockZ();
+                Integer y = ((Player) commandSender).getWorld().getHighestBlockYAt(x, z) + 1;
+
+                this.teleportPlayer(target, new Location(target.getWorld(), x, y, z), commandSender);
 
             } else {
 
-                Player target = this.plugin.getServer().getPlayer(args[0]);
+                target = plugin.getServer().getPlayer(args[0]);
 
                 if (target == null) {
                     throw new CommandException(String.format("Player %s does not exist.", args[0]));
                 }
 
-                this.doTeleport((Player) commandSender, target, commandSender);
+                this.teleportPlayer((Player) commandSender, target, commandSender);
 
             }
 
         // handle player teleporting
         } else if (args.length == 2) {
 
-            Player source = this.plugin.getServer().getPlayer(args[0]);
+            Player source = plugin.getServer().getPlayer(args[0]);
 
             if (source == null) {
                 throw new CommandException(String.format("Player %s does not exist.", args[0]));
             }
 
-
             if (args[1].contains(":")) {
 
-                this.doTeleport(source, args[1].split(":"), commandSender);
+                this.teleportPlayer(source, args[1].split(":"), commandSender);
 
             } else {
 
-                Player target = this.plugin.getServer().getPlayer(args[1]);                
+                Player target = plugin.getServer().getPlayer(args[1]);
 
                 if (target == null) {
                     throw new CommandException(String.format("Player %s does not exist.", args[1]));
                 }
 
-                this.doTeleport(source, target, commandSender);
+                this.teleportPlayer(source, target, commandSender);
 
             }
 
@@ -78,16 +87,14 @@ public class TeleportCommand extends AbstractCommand {
         return true;
     }
 
-    private void doTeleport(Player source, Player target, CommandSender sender) {
+    private void teleportPlayer(Player source, Player target, CommandSender sender) {
 
-        // teleport player
         source.teleportTo(target);
-
-        // report
         sender.sendMessage(ChatColor.GREEN + String.format("Teleported %s to player %s.", source.getDisplayName(), target.getDisplayName()));
+
     }
 
-    private void doTeleport(Player source, String[] coordinates, CommandSender sender) throws CommandException {
+    private void teleportPlayer(Player target, String[] coordinates, CommandSender sender) throws CommandException {
 
         String coordinateString = String.format("%s:%s:%s", coordinates[0], coordinates[1], coordinates[2]);
 
@@ -109,11 +116,16 @@ public class TeleportCommand extends AbstractCommand {
             throw new CommandException(String.format("Coordinates (%s) are malformed.", coordinateString));
         }
 
-        // teleport player
-        source.teleportTo(new Location(source.getWorld(), x ,y, z));
+        this.teleportPlayer(target, new Location(target.getWorld(), x, y, z), sender);
+    }
 
-        // report
-        sender.sendMessage(ChatColor.GREEN + String.format("Teleported %s to location %s", source.getDisplayName(), coordinateString));
+    private void teleportPlayer(Player target, Location location, CommandSender sender) {
+
+        String coordinates = String.format("%s:%s:%s", location.getX(), location.getY(), location.getZ());
+
+        target.teleportTo(location);
+        sender.sendMessage(ChatColor.GREEN + String.format("Teleported %s to location %s", target.getDisplayName(), coordinates));
+
     }
 
     @Override

@@ -20,34 +20,34 @@ public class CommandHandler {
     }
 
     public void register(String key, AbstractCommand command) {
-        this.commands.put(key, command);
+        commands.put(key, command);
     }
 
     public boolean dispatch(org.bukkit.command.Command command, CommandSender sender, String[] args) throws CommandException {
 
-        AbstractCommand target = this.commands.get(command.getName());
+        AbstractCommand target = commands.get(command.getName());
 
         if (target == null) {
             return false;
-        }
-
-        if (sender instanceof Player && !target.isGameCommand()) {
-            return true;
-        }
-
-        if (sender instanceof ConsoleCommandSender && !target.isConsoleCommand()) {
-            return true;
         }
 
         if (target.isOperatorCommand(args) && !sender.isOp()) {
             throw new CommandException("You are not authorized to use this command");
         }
 
+        if (sender instanceof Player && !target.isGameCommand(args)) {
+            throw new CommandException("This command can only be called form the console");
+        }
+
+        if (sender instanceof ConsoleCommandSender && !target.isConsoleCommand(args)) {
+            throw new CommandException("This command can only be called in-game.");
+        }
+
         return target.execute(sender, command.getName(), args);
     }
 
     public void clearCommands() {
-        this.commands.clear();
+        commands.clear();
     }
 
 }

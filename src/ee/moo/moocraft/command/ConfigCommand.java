@@ -1,11 +1,8 @@
 package ee.moo.moocraft.command;
 
-import ee.moo.moocraft.MooCraftPlugin;
-import ee.moo.moocraft.configuration.ConfigurablePlugin;
-import ee.moo.moocraft.configuration.ConfigurationManager;
+import ee.moo.moocraft.MooCraft;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
 
 /**
  * User: Tanel Suurhans
@@ -13,7 +10,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class ConfigCommand extends AbstractCommand {
 
-    public ConfigCommand(Plugin plugin) {
+    public ConfigCommand(MooCraft plugin) {
         super(plugin);
     }
 
@@ -50,14 +47,14 @@ public class ConfigCommand extends AbstractCommand {
 
     private void loadConfig(CommandSender sender) {
 
-        this.getConfigManager().reload();        
+        plugin.getConfigManager().reload();
         sender.sendMessage(ChatColor.GREEN + "Configuration loaded.");
 
     }
 
     private void saveConfig(CommandSender sender) {
 
-        if (this.getConfigManager().save()) {
+        if (plugin.getConfigManager().save()) {
             sender.sendMessage(ChatColor.GREEN + "Configuration saved.");
         } else {
             sender.sendMessage(ChatColor.RED + "Configuration save failed.");
@@ -67,7 +64,7 @@ public class ConfigCommand extends AbstractCommand {
 
     private void getConfig(CommandSender sender, String[] args) {
 
-        Object value = this.getConfigManager().get(args[1]);
+        Object value = plugin.getConfigManager().get(args[1]);
 
         if (value == null) {
             sender.sendMessage(ChatColor.RED + String.format("Property %s could not be found.", ChatColor.WHITE + args[1] + ChatColor.RED));
@@ -75,10 +72,6 @@ public class ConfigCommand extends AbstractCommand {
             sender.sendMessage(ChatColor.GREEN + String.format("%s: %s", args[1], value));
         }
         
-    }
-
-    private ConfigurationManager getConfigManager() {
-        return ((ConfigurablePlugin) this.plugin).getConfigManager();
     }
 
     @Override

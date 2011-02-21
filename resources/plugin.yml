@@ -1,5 +1,5 @@
 name: MooCraft
-main: ee.moo.moocraft.MooCraftPlugin
+main: ee.moo.moocraft.MooCraft
 version: 0.0.1
 website: http://github.com/tanelsuurhans
 author: Tanel Suurhans
@@ -17,8 +17,10 @@ commands:
                 Usage of /teleport:
                 /teleport [player]
                 /teleport [x:y:z]
+                /teleport ground
                 /teleport [player] [player]
                 /teleport [player] [x:y:z]
+                /teleport [player] ground
 
     time:
         description: Set or show the current server time
@@ -58,3 +60,46 @@ commands:
                 /fire spread
                 /fire burn
                 /fire
+    kick:
+        description: Kick a player
+        usage:  |
+                Usage of /kick
+                /kick [player]
+
+    god:
+        description: God mode
+        usage:  |
+                Usage of /god
+                /god [player]
+                /god [player] [enable|disable]
+                /god list
+
+    compass:
+        description: Check your bearing
+        usage: /compass - will yield your current bearing
+
+    depth:
+        description: Check your depth from the sealevel
+        usage: /depth - will return your depth from sealevel
+
+    memory:
+        description: Check server memory consumption
+        usage: /memory
+
+    heal:
+        description: Heal player
+        usage:  |
+                /heal
+                /heal [player]
+
+    kill:
+        description: Kill player
+        usage:  |
+                /kill
+                /kill [player]
+
+    home:
+        description: Set or teleport to home
+        usage:  |
+                /home - return to your home
+                /home set - set your home to current location

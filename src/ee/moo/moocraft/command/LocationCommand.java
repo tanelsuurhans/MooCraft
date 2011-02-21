@@ -1,11 +1,11 @@
 package ee.moo.moocraft.command;
 
+import ee.moo.moocraft.MooCraft;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 /**
  * User: Tanel Suurhans
@@ -13,7 +13,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class LocationCommand extends AbstractCommand {
 
-    public LocationCommand(Plugin plugin) {
+    public LocationCommand(MooCraft plugin) {
         super(plugin);
     }
 
@@ -26,7 +26,7 @@ public class LocationCommand extends AbstractCommand {
 
         if (args.length == 1) {
 
-            Player target = this.plugin.getServer().getPlayer(args[0]);
+            Player target = plugin.getServer().getPlayer(args[0]);
 
             if (target == null) {
                 throw new CommandException(String.format("Player named %s does not exist", args[0]));

@@ -1,8 +1,8 @@
 package ee.moo.moocraft.command;
 
+import ee.moo.moocraft.MooCraft;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 /**
  * User: Tanel Suurhans
@@ -13,7 +13,7 @@ public class TimeCommand extends AbstractCommand {
     private static final long TIME_DAY = 13000;
     private static final long TIME_NIGHT = 0;
 
-    public TimeCommand(Plugin plugin) {
+    public TimeCommand(MooCraft plugin) {
         super(plugin);
     }
 

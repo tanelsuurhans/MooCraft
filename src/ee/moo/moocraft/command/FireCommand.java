@@ -1,10 +1,8 @@
 package ee.moo.moocraft.command;
 
-import ee.moo.moocraft.configuration.ConfigurablePlugin;
-import ee.moo.moocraft.configuration.ConfigurationManager;
+import ee.moo.moocraft.MooCraft;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
 
 /**
  * User: Tanel Suurhans
@@ -16,7 +14,7 @@ public class FireCommand extends AbstractCommand {
         BURN, SPREAD, ENABLE, DISABLE
     }
 
-    public FireCommand(Plugin plugin) {
+    public FireCommand(MooCraft plugin) {
         super(plugin);
     }
 
@@ -85,30 +83,26 @@ public class FireCommand extends AbstractCommand {
     }
 
     private void burnEnabled(CommandSender sender) {
-        sender.sendMessage(ChatColor.GREEN + String.format("Fire burning is %s", ChatColor.WHITE + this.getConfigManager().booleanString("fire.burn")));
+        sender.sendMessage(ChatColor.GREEN + String.format("Fire burning is %s", ChatColor.WHITE + plugin.getConfigManager().booleanString("fire.burn")));
     }
 
     private void spreadEnabled(CommandSender sender) {
-        sender.sendMessage(ChatColor.GREEN + String.format("Fire spreading is %s", ChatColor.WHITE + this.getConfigManager().booleanString("fire.spread")));
+        sender.sendMessage(ChatColor.GREEN + String.format("Fire spreading is %s", ChatColor.WHITE + plugin.getConfigManager().booleanString("fire.spread")));
     }
 
     private void changeBurn(CommandSender sender, boolean state) {
-        this.getConfigManager().set("fire.burn", state);
-        sender.sendMessage(ChatColor.GREEN + String.format("Fire burning is now %s", ChatColor.WHITE + this.getConfigManager().booleanString("fire.burn")));
+        plugin.getConfigManager().set("fire.burn", state);
+        sender.sendMessage(ChatColor.GREEN + String.format("Fire burning is now %s", ChatColor.WHITE + plugin.getConfigManager().booleanString("fire.burn")));
     }
 
     private void changeSpread(CommandSender sender, boolean state) {
-        this.getConfigManager().set("fire.spread", state);
-        sender.sendMessage(ChatColor.GREEN + String.format("Fire spreading is now %s", ChatColor.WHITE + this.getConfigManager().booleanString("fire.spread")));
+        plugin.getConfigManager().set("fire.spread", state);
+        sender.sendMessage(ChatColor.GREEN + String.format("Fire spreading is now %s", ChatColor.WHITE + plugin.getConfigManager().booleanString("fire.spread")));
     }
 
     @Override
     public boolean isOperatorCommand(String[] args) {
         return true;
-    }
-
-    private ConfigurationManager getConfigManager() {
-        return ((ConfigurablePlugin) this.plugin).getConfigManager();
     }
 
 }

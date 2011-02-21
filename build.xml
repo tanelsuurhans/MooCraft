@@ -1,28 +1,11 @@
 <project name="MooCraft" default="deploy" basedir=".">
-	<property name="name" value="MooCraft"/>
-	<property name="plugins" location="server/plugins/"/>
 
-	<property name="src" location="src"/>
-	<property name="bin" location="target"/>
-
-	<target name="init">
-		<mkdir dir="${bin}"/>
+	<target name="deploy" depends="clean">
+		<copy file="target/MooCraft.jar" todir="server/plugins"/>
 	</target>
 
-	<target name="dist">
-		<jar jarfile="${bin}/${name}.jar">
-			<fileset dir="${bin}/classes"/>
-			<fileset file="resources/plugin.yml"/>
-		</jar>
-	</target>
-	
-	<target name="deploy" depends="dist">
-		<copy file="${bin}/${name}.jar" todir="${plugins}"/>
-	</target>
-	
 	<target name="clean">
-		<delete dir="${bin}"/>
-        <delete file="${plugins}/${name}.jar"/>
+        <delete file="server/plugins/MooCraft.jar"/>
 	</target>
-    
+
 </project>

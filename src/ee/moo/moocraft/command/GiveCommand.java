@@ -1,11 +1,11 @@
 package ee.moo.moocraft.command;
 
+import ee.moo.moocraft.MooCraft;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 /**
  * User: Tanel Suurhans
@@ -13,7 +13,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class GiveCommand extends AbstractCommand {
 
-    public GiveCommand(Plugin plugin) {
+    public GiveCommand(MooCraft plugin) {
         super(plugin);
     }
 
@@ -45,7 +45,7 @@ public class GiveCommand extends AbstractCommand {
 
         if (args.length == 3) {
 
-            target = this.plugin.getServer().getPlayer(args[2]);
+            target = plugin.getServer().getPlayer(args[2]);
 
             if (target == null) {
                 throw new CommandException(String.format("%s is not a valid player name.", args[2]));
@@ -65,7 +65,7 @@ public class GiveCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean isConsoleCommand() {
+    public boolean isConsoleCommand(String[] args) {
         return false;
     }
 

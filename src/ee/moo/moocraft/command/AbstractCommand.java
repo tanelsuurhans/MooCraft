@@ -1,7 +1,6 @@
 package ee.moo.moocraft.command;
 
-import ee.moo.moocraft.MooCraftPlugin;
-import ee.moo.moocraft.configuration.ConfigurablePlugin;
+import ee.moo.moocraft.MooCraft;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
@@ -11,9 +10,9 @@ import org.bukkit.plugin.Plugin;
  */
 public abstract class AbstractCommand {
 
-    protected Plugin plugin;
+    protected MooCraft plugin;
 
-    public AbstractCommand(Plugin plugin) {
+    public AbstractCommand(MooCraft plugin) {
         this.plugin = plugin;
     }
 
@@ -23,11 +22,11 @@ public abstract class AbstractCommand {
         return false;
     }
 
-    public boolean isGameCommand() {
+    public boolean isGameCommand(String[] args) {
         return true;
     }
 
-    public boolean isConsoleCommand() {
+    public boolean isConsoleCommand(String[] args) {
         return true;
     }
 
