@@ -32,7 +32,7 @@ public class DatabaseManager {
 
         try {
             Class.forName("org.postgresql.Driver");
-            this.connection = DriverManager.getConnection(getConnectionString());
+            this.connection = DriverManager.getConnection(getConnectionString(), System.getProperty("user.name"), "");
 
             plugin.log(Level.INFO, "[MooCraft] Connected to " + getConnectionString());
 
@@ -180,8 +180,8 @@ public class DatabaseManager {
 
         StringBuilder connection = new StringBuilder("jdbc:postgresql://");
 
-        if (!"".equals(user) && !"".equals(pass))
-            connection.append(user).append(":").append(pass).append("@");
+        /*if (!"".equals(user) && !"".equals(pass))
+            connection.append(user).append(":").append(pass).append("@");*/
 
         connection.append(host);
 

@@ -103,3 +103,18 @@ commands:
         usage:  |
                 /home - return to your home
                 /home set - set your home to current location
+
+    world:
+        description: Manage worlds
+        usage:  |
+                /world create [normal|nether]
+                /world delete
+                /world list
+                /world players
+
+    travel:
+        description: Travel to world
+        usage:  |
+                /travel [world name]
+                /travel [world index]
+

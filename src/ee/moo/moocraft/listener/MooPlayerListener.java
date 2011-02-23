@@ -1,4 +1,4 @@
-package ee.moo.moocraft.listeners;
+package ee.moo.moocraft.listener;
 
 import ee.moo.moocraft.MooCraft;
 import org.bukkit.ChatColor;

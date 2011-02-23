@@ -19,6 +19,15 @@ public class PlayerManager implements Iterable {
 
     public PlayerManager(MooCraft plugin) {
         this.plugin = plugin;
+        this.initialize();
+    }
+
+    private void initialize() {
+
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
+            playerList.put(player.getEntityId(), new MooPlayer(player, plugin.getDatabaseManager()));
+        }
+
     }
 
     public void addPlayer(Player entity) {

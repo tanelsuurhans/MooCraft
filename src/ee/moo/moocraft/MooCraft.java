@@ -4,9 +4,9 @@ import ee.moo.moocraft.command.AbstractCommand;
 import ee.moo.moocraft.command.CommandException;
 import ee.moo.moocraft.command.CommandHandler;
 import ee.moo.moocraft.manager.ConfigManager;
-import ee.moo.moocraft.listeners.MooBlockListener;
-import ee.moo.moocraft.listeners.MooEntityListener;
-import ee.moo.moocraft.listeners.MooPlayerListener;
+import ee.moo.moocraft.listener.MooBlockListener;
+import ee.moo.moocraft.listener.MooEntityListener;
+import ee.moo.moocraft.listener.MooPlayerListener;
 import ee.moo.moocraft.manager.PlayerManager;
 import ee.moo.moocraft.manager.DatabaseManager;
 import ee.moo.moocraft.util.StringUtil;
@@ -20,7 +20,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.lang.reflect.Constructor;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * User: Tanel Suurhans

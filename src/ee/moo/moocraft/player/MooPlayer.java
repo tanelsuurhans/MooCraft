@@ -40,6 +40,14 @@ public class MooPlayer implements Player{
         /** if player record does not exist, create it */
     }
 
+    public Location getHome() {
+        return new Location(player.getWorld(), 1, 2, 3);
+    }
+
+    public void setHome(Location location) {
+
+    }
+
     public boolean isGodMode() {
         return this.getBoolean(Key.GOD);
     }
