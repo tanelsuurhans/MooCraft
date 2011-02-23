@@ -46,8 +46,4 @@ public class CommandHandler {
         return target.execute(sender, command.getName(), args);
     }
 
-    public void clearCommands() {
-        commands.clear();
-    }
-
 }

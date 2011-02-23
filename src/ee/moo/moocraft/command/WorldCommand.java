@@ -57,18 +57,13 @@ public class WorldCommand extends AbstractCommand {
 
         sender.sendMessage(ChatColor.GREEN + "Total worlds: " + ChatColor.WHITE + plugin.getServer().getWorlds().size());
 
-        for (int i = 0; i < plugin.getServer().getWorlds().size(); i++) {
+        for (World world : plugin.getServer().getWorlds()) {
 
             StringBuffer buffer = new StringBuffer();
-            World world = plugin.getServer().getWorlds().get(i);
 
-            buffer.append(ChatColor.GREEN + "[");
-            buffer.append(ChatColor.WHITE).append(i);
-            buffer.append(ChatColor.GREEN + "]");
-            buffer.append(ChatColor.GREEN + ": ");
             buffer.append(ChatColor.WHITE).append(world.getName());
             buffer.append(ChatColor.GREEN + " (");
-            buffer.append(ChatColor.WHITE).append(world.getLivingEntities().size());
+            buffer.append(ChatColor.WHITE).append(plugin.getWorldManager().getPlayers(world).size());
             buffer.append(ChatColor.GREEN + " online)");
 
             sender.sendMessage(buffer.toString());
@@ -83,7 +78,7 @@ public class WorldCommand extends AbstractCommand {
             throw new CommandException("Invalid number of arguments.");
         }
 
-        World world = plugin.getServer().getWorld(args[1]);
+        World world = plugin.getWorldManager().getWorld(args[1]);
 
         if (world != null) {
             throw new CommandException(String.format("World with the name %s already exists", world.getName()));
@@ -95,7 +90,7 @@ public class WorldCommand extends AbstractCommand {
             env = World.Environment.NETHER;
         }
 
-        world = plugin.getServer().createWorld(args[1], env);
+        world = plugin.getWorldManager().addWorld(args[1], env);
 
         String worldName = ChatColor.WHITE + world.getName() + ChatColor.WHITE;
         String worldType = ChatColor.WHITE + world.getEnvironment().toString() + ChatColor.WHITE;
@@ -109,11 +104,13 @@ public class WorldCommand extends AbstractCommand {
             throw new CommandException("Invalid number of arguments.");
         }
 
-        World world = plugin.getServer().getWorld(args[1]);
+        World world = plugin.getWorldManager().getWorld(args[1]);
 
         if (world == null) {
             throw new CommandException(String.format("World named %s does not exist.", args[1]));
         }
+
+        plugin.getWorldManager().removeWorld(world);
 
         String worldName = ChatColor.WHITE + world.getName() + ChatColor.GREEN;
         String worldType = ChatColor.WHITE + world.getEnvironment().toString() + ChatColor.GREEN;

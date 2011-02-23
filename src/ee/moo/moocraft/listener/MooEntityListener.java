@@ -1,7 +1,6 @@
 package ee.moo.moocraft.listener;
 
 import ee.moo.moocraft.MooCraft;
-import ee.moo.moocraft.player.MooPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.*;
@@ -32,9 +31,9 @@ public class MooEntityListener extends EntityListener {
 
         if (event.getEntity() instanceof Player) {
 
-            MooPlayer player = plugin.getPlayerManager().getPlayer(event.getEntity());
+            Player player = (Player) event.getEntity();
 
-            if (player.isGodMode()) {
+            if (plugin.getPlayerManager().hasGodMode(player)) {
                 event.setCancelled(true);
             }
 
@@ -47,9 +46,10 @@ public class MooEntityListener extends EntityListener {
 
         if (event.getEntity() instanceof Player) {
 
-            MooPlayer player = plugin.getPlayerManager().getPlayer(event.getEntity());
+            Player player = (Player) event.getEntity();
 
-            if (player.isGodMode()) {
+
+            if (plugin.getPlayerManager().hasGodMode(player)) {
                 event.setCancelled(true);
             }
 

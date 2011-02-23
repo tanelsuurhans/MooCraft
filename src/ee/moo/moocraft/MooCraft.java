@@ -3,18 +3,15 @@ package ee.moo.moocraft;
 import ee.moo.moocraft.command.AbstractCommand;
 import ee.moo.moocraft.command.CommandException;
 import ee.moo.moocraft.command.CommandHandler;
-import ee.moo.moocraft.manager.ConfigManager;
+import ee.moo.moocraft.manager.*;
 import ee.moo.moocraft.listener.MooBlockListener;
 import ee.moo.moocraft.listener.MooEntityListener;
 import ee.moo.moocraft.listener.MooPlayerListener;
-import ee.moo.moocraft.manager.PlayerManager;
-import ee.moo.moocraft.manager.DatabaseManager;
 import ee.moo.moocraft.util.StringUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Constructor;
@@ -29,33 +26,42 @@ public class MooCraft extends JavaPlugin {
 
     private final CommandHandler commandHandler = new CommandHandler();
 
-    private ConfigManager configManager;
-    private PlayerManager playerManager;
-    private DatabaseManager databaseManager;
+    private ConfigManager configManager = new ConfigManager(this);
+    private PlayerManager playerManager = new PlayerManager(this);
+    private WorldManager worldManager = new WorldManager(this);
+    private WarpManager warpManager = new WarpManager(this);
+
+    private PersistenceManager persistenceManager = new PersistenceManager(this);
+
+    private MooBlockListener blockListener = new MooBlockListener(this);
+    private MooPlayerListener playerListener = new MooPlayerListener(this);
+    private MooEntityListener entityListener = new MooEntityListener(this);
 
     public MooCraft() {
         super();
     }
 
     public void onDisable() {
-        commandHandler.clearCommands();
-        databaseManager.disconnect();
 
-       log(Level.INFO, String.format("Version %s is disabled.", getDescription().getVersion()));
+        configManager.disable();
+        playerManager.disable();
+        worldManager.disable();
+        warpManager.disable();
+
+        persistenceManager.disable();
+
+        log(Level.INFO, String.format("Version %s is disabled.", getDescription().getVersion()));
+
     }
 
     public void onEnable() {
 
-        this.configManager = new ConfigManager(this);
-        this.playerManager = new PlayerManager(this);
-        this.databaseManager = new DatabaseManager(this);
+        persistenceManager.enable();
 
-        Listener playerListener = new MooPlayerListener(this);
-        Listener blockListener = new MooBlockListener(this);
-        Listener entityListener = new MooEntityListener(this);
-
-        databaseManager.connect();
-        databaseManager.load();
+        worldManager.enable();
+        playerManager.enable();
+        configManager.enable();
+        warpManager.enable();
 
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, playerListener, Event.Priority.Low, this);
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Low, this);
@@ -64,6 +70,7 @@ public class MooCraft extends JavaPlugin {
 
         getServer().getPluginManager().registerEvent(Event.Type.BLOCK_IGNITE, blockListener, Event.Priority.High, this);
         getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BURN, blockListener, Event.Priority.High, this);
+        getServer().getPluginManager().registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Event.Priority.High, this);
 
         getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DEATH, entityListener, Event.Priority.Normal, this);
         getServer().getPluginManager().registerEvent(Event.Type.ENTITY_COMBUST, entityListener, Event.Priority.High, this);
@@ -116,8 +123,16 @@ public class MooCraft extends JavaPlugin {
         return this.playerManager;
     }
 
-    public DatabaseManager getDatabaseManager() {
-        return this.databaseManager;
+    public PersistenceManager getPersistenceManager() {
+        return this.persistenceManager;
+    }
+
+    public WorldManager getWorldManager() {
+        return this.worldManager;
+    }
+
+    public WarpManager getWarpManager() {
+        return this.warpManager;
     }
 
     public void log(Level level, String output) {

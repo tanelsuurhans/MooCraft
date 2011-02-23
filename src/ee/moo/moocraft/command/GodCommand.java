@@ -1,7 +1,6 @@
 package ee.moo.moocraft.command;
 
 import ee.moo.moocraft.MooCraft;
-import ee.moo.moocraft.player.MooPlayer;
 import ee.moo.moocraft.util.StringUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -47,10 +46,10 @@ public class GodCommand extends AbstractCommand {
 
         ArrayList<String> players = new ArrayList<String>();
 
-        for (Object obj : plugin.getPlayerManager()) {
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
 
-            if (((MooPlayer) obj).isGodMode()) {
-                players.add(((MooPlayer) obj).getDisplayName());
+            if (plugin.getPlayerManager().hasGodMode(player)) {
+                players.add(player.getDisplayName());
             }
 
         }
@@ -71,10 +70,9 @@ public class GodCommand extends AbstractCommand {
             throw new CommandException(String.format("Cannot find player named %s.", args[0]));
         }
 
-        MooPlayer player = plugin.getPlayerManager().getPlayer(target);
         String message = ChatColor.GREEN + String.format("God mode for %s is ", ChatColor.WHITE + target.getDisplayName() + ChatColor.GREEN);
 
-        if (player.isGodMode()) {
+        if (plugin.getPlayerManager().hasGodMode(target)) {
             sender.sendMessage(String.format(message + "%s", ChatColor.WHITE + "on"));
         } else {
             sender.sendMessage(String.format(message + "%s", ChatColor.WHITE + "off"));
@@ -104,7 +102,7 @@ public class GodCommand extends AbstractCommand {
             throw new CommandException(String.format("Cannot find player named %s", args[0]));
         }
 
-        plugin.getPlayerManager().getPlayer(target).setGodMode(isGod);
+        plugin.getPlayerManager().setGodMode(target, isGod);
 
         /** send the messages */
         this.getPlayer(sender, args);

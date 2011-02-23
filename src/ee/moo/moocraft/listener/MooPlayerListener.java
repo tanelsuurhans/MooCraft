@@ -2,10 +2,7 @@ package ee.moo.moocraft.listener;
 
 import ee.moo.moocraft.MooCraft;
 import org.bukkit.ChatColor;
-import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -47,5 +44,10 @@ public class MooPlayerListener extends PlayerListener {
     @Override
     public void onPlayerChat(PlayerChatEvent event) {
         event.setFormat(ChatColor.DARK_GRAY + "[" + dateFormat.format(new Date()) + "]" + ChatColor.WHITE + " <%s> %s");
+    }
+
+    @Override
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        event.getPlayer().teleportTo(plugin.getPlayerManager().getHome(event.getPlayer()));
     }
 }

@@ -1,9 +1,15 @@
 package ee.moo.moocraft.listener;
 
 import ee.moo.moocraft.MooCraft;
+import org.bukkit.Material;
 import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockListener;
+import org.bukkit.inventory.ItemStack;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 import static org.bukkit.Material.LEAVES;
 

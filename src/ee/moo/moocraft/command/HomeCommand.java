@@ -1,7 +1,9 @@
 package ee.moo.moocraft.command;
 
 import ee.moo.moocraft.MooCraft;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * User: Tanel Suurhans
@@ -15,6 +17,21 @@ public class HomeCommand  extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender, String command, String[] args) throws CommandException {
+
+        Player player = (Player) commandSender;
+
+        if (args.length == 1) {
+
+            plugin.getPlayerManager().setHome(player);
+            player.sendMessage(ChatColor.GREEN + "Home location for this world stored.");
+
+        } else {
+
+            player.teleportTo(plugin.getPlayerManager().getHome(player));
+            player.sendMessage(ChatColor.GREEN + "Teleported to home.");
+
+        }
+
         return true;
     }
 

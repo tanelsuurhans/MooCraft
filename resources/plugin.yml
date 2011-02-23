@@ -118,3 +118,11 @@ commands:
                 /travel [world name]
                 /travel [world index]
 
+    warp:
+        description: Create a warp spot or teleport
+        usage:  |
+                /warp create name [private]
+                /warp remove name
+                /warp list
+                /warp [name]
+
