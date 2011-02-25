@@ -16,4 +16,8 @@ public class LocalWorld {
         this.environment = environment;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
 }

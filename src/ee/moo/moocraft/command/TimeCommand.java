@@ -60,4 +60,8 @@ public class TimeCommand extends AbstractCommand {
 
     }
 
+    @Override
+    public boolean isConsoleCommand(String[] args) {
+        return false;
+    }
 }

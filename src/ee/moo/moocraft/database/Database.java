@@ -94,7 +94,7 @@ public class Database {
 
             sqlStatement.execute("CREATE TABLE IF NOT EXISTS warps (" +
                 "id INTEGER PRIMARY KEY," +
-                "player_name TEXT NOT NULL," +
+                "player_name TEXT," +
                 "name TEXT NOT NULL," +
                 "world TEXT NOT NULL," +
                 "x DOUBLE PRECISION NOT NULL DEFAULT 0.0," +

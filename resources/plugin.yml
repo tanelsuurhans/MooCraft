@@ -121,8 +121,14 @@ commands:
     warp:
         description: Create a warp spot or teleport
         usage:  |
-                /warp create name [private]
+                /warp create name
+                /warp private name
                 /warp remove name
                 /warp list
                 /warp [name]
+
+    spawn:
+        description: spawn a mob or animal
+        usage:  |
+                /spawn [name]
 

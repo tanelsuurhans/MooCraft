@@ -3,6 +3,7 @@ package ee.moo.moocraft;
 import ee.moo.moocraft.command.AbstractCommand;
 import ee.moo.moocraft.command.CommandException;
 import ee.moo.moocraft.command.CommandHandler;
+import ee.moo.moocraft.listener.MooVehicleListener;
 import ee.moo.moocraft.manager.*;
 import ee.moo.moocraft.listener.MooBlockListener;
 import ee.moo.moocraft.listener.MooEntityListener;
@@ -33,9 +34,10 @@ public class MooCraft extends JavaPlugin {
 
     private PersistenceManager persistenceManager = new PersistenceManager(this);
 
-    private MooBlockListener blockListener = new MooBlockListener(this);
-    private MooPlayerListener playerListener = new MooPlayerListener(this);
-    private MooEntityListener entityListener = new MooEntityListener(this);
+    private final MooBlockListener blockListener = new MooBlockListener(this);
+    private final MooPlayerListener playerListener = new MooPlayerListener(this);
+    private final MooEntityListener entityListener = new MooEntityListener(this);
+    private final MooVehicleListener vehicleListener = new MooVehicleListener(this);
 
     public MooCraft() {
         super();
@@ -58,9 +60,9 @@ public class MooCraft extends JavaPlugin {
 
         persistenceManager.enable();
 
+        configManager.enable();
         worldManager.enable();
         playerManager.enable();
-        configManager.enable();
         warpManager.enable();
 
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, playerListener, Event.Priority.Low, this);
@@ -75,6 +77,10 @@ public class MooCraft extends JavaPlugin {
         getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DEATH, entityListener, Event.Priority.Normal, this);
         getServer().getPluginManager().registerEvent(Event.Type.ENTITY_COMBUST, entityListener, Event.Priority.High, this);
         getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGED, entityListener, Event.Priority.Normal, this);
+
+        getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_COLLISION_ENTITY, vehicleListener, Event.Priority.Normal, this);
+        getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_COLLISION_BLOCK, vehicleListener, Event.Priority.Normal, this);
+        getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_DAMAGE, vehicleListener, Event.Priority.High, this);
 
         /** automatically load commands */
         for (Object obj : ((LinkedHashMap) getDescription().getCommands()).keySet()) {

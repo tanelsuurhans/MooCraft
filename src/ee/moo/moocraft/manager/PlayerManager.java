@@ -2,10 +2,13 @@ package ee.moo.moocraft.manager;
 
 import ee.moo.moocraft.MooCraft;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: Tanel Suurhans
@@ -27,19 +30,7 @@ public class PlayerManager {
     public void enable() {
 
         for (Player player : plugin.getServer().getOnlinePlayers()) {
-
-            if (!playerList.containsKey(player.getEntityId())) {
-
-                HashMap<Property, Object> properties = new HashMap<Property, Object>();
-                Location home = plugin.getPersistenceManager().findHome(player);
-
-                if (home != null)
-                    properties.put(Property.HOME, home);
-
-                playerList.put(player.getEntityId(), properties);
-
-            }
-
+            this.addPlayer(player);
         }
 
     }
@@ -51,7 +42,21 @@ public class PlayerManager {
     public void addPlayer(Player entity) {
 
         if (!playerList.containsKey(entity.getEntityId())) {
-            playerList.put(entity.getEntityId(), new HashMap<Property, Object>());
+
+            HashMap<Property, Object> properties = new HashMap<Property, Object>();
+            HashMap<String, Location> homes = new HashMap<String, Location>();
+
+            for (World world : plugin.getServer().getWorlds()) {
+
+                Location home = plugin.getPersistenceManager().findHome(entity, world);
+
+                if (home != null)
+                    homes.put(world.getName(), home);
+
+            }
+
+            properties.put(Property.HOME, homes);
+            playerList.put(entity.getEntityId(), properties);
         }
 
     }
@@ -61,19 +66,34 @@ public class PlayerManager {
     }
 
     public void setHome(Player player){
-        playerList.get(player.getEntityId()).put(Property.HOME, player.getLocation());
+
+        Map<Property, Object> props = playerList.get(player.getEntityId());
+        Map<String, Location> homes = (Map) props.get(Property.HOME);
+
+        homes.put(player.getWorld().getName(), player.getLocation());
         plugin.getPersistenceManager().saveHome(player, player.getLocation());
+
     }
 
     public Location getHome(Player player) {
+        return getHome(player, player.getWorld());
+    }
 
-        HashMap properties = playerList.get(player.getEntityId());
+    public Location getHome(Player player, World world) {
 
-        if (!properties.containsKey(Property.GOD)) {
-            return player.getWorld().getSpawnLocation();
+        Map<Property, Object> properties = playerList.get(player.getEntityId());
+
+        if (!properties.containsKey(Property.HOME)) {
+            return world.getSpawnLocation();
         }
 
-        return (Location) properties.get(Property.HOME);
+        Map<String, Location> homes = (Map) properties.get(Property.HOME);
+
+        if (!homes.containsKey(world.getName())) {
+            return world.getSpawnLocation();
+        }
+
+        return homes.get(world.getName());
     }
 
     public boolean hasGodMode(Player player) {
@@ -89,6 +109,21 @@ public class PlayerManager {
 
     public void setGodMode(Player player, boolean mode) {
         playerList.get(player.getEntityId()).put(Property.GOD, mode);
+    }
+
+    public void removeWorld(World world) {
+        
+        for (Map props : playerList.values()) {
+
+            Map<String, Location> homes = (Map) props.get(Property.HOME);
+
+            if (homes.containsKey(world.getName())) {
+                Location home = homes.remove(world.getName());
+                plugin.getPersistenceManager().removeHome(home);
+            }
+
+        }
+
     }
     
 }

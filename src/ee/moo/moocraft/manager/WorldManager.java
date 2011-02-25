@@ -6,10 +6,7 @@ import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -50,22 +47,26 @@ public class WorldManager {
     public World addWorld(String name, World.Environment type) {
 
         if (worldList.containsKey(name)) {
-            return null;
+            return plugin.getServer().getWorld(name);
         }
 
         World world = plugin.getServer().createWorld(name, type);
 
         worldList.put(name, new LocalWorld(world.getName(), world.getEnvironment()));
         plugin.getPersistenceManager().saveWorld(world);
+        plugin.getWarpManager().addWorld(world);
 
         return world;
     }
 
     public void removeWorld(World world) {
 
+        /** TODO: delete world? */
         if (worldList.containsKey(world.getName())) {
 
             plugin.getPersistenceManager().removeWorld(world);
+            plugin.getPlayerManager().removeWorld(world);
+            plugin.getWarpManager().removeWorld(world);
             worldList.remove(world.getName());
 
         }

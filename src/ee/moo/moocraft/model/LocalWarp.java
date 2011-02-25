@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 public class LocalWarp {
 
     private String name;
-    private Location location;
     private Player player;
+    private Location location;
 
     public LocalWarp(String name, Location location) {
         this.name = name;
@@ -22,6 +22,22 @@ public class LocalWarp {
         this.name = name;
         this.player = player;
         this.location = location;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public Location getLocation() {
+        return this.location;
+    }
+    
+    public String getWorldName() {
+        return this.location.getWorld().getName();
+    }
+
+    public boolean ownedBy(Player player) {
+        return player.getDisplayName().equals(this.player.getDisplayName());
     }
 
     public boolean isPrivate() {

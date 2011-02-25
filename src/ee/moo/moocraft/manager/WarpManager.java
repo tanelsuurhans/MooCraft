@@ -3,9 +3,13 @@ package ee.moo.moocraft.manager;
 import ee.moo.moocraft.MooCraft;
 import ee.moo.moocraft.model.LocalWarp;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: Tanel Suurhans
@@ -14,7 +18,7 @@ import java.util.HashMap;
 public class WarpManager {
 
     private MooCraft plugin;
-    private HashMap<String, LocalWarp> warpList = new HashMap<String, LocalWarp>();
+    private HashMap<String, List<LocalWarp>> warpList = new HashMap<String, List<LocalWarp>>();
 
     public WarpManager(MooCraft plugin) {
         this.plugin = plugin;
@@ -25,35 +29,99 @@ public class WarpManager {
     }
 
     public void enable() {
-        // query all warps
-    }
 
-    public void addWarp(String name, Location location) {
+        for (World world : plugin.getServer().getWorlds()) {
 
-        if (!warpList.containsKey(name)) {
-            warpList.put(name, new LocalWarp(name, location));
+            List<LocalWarp> warps = new ArrayList<LocalWarp>();
+            
+            for (Map<String, Object> properties : plugin.getPersistenceManager().findWarps(world)) {
+
+                String name = (String) properties.get("name");
+
+                Double x = (Double) properties.get("x");
+                Double y = (Double) properties.get("y");
+                Double z = (Double) properties.get("z");
+
+                Location location = new Location(world, x, y, z);
+
+                warps.add(new LocalWarp(name, location));
+            }
+
+            warpList.put(world.getName(), warps);
         }
 
     }
 
-    public void addWarp(String name, Location location, Player player) {
+    public LocalWarp addWarp(String name, Location location) {
 
-        if (!warpList.containsKey(name)) {
-            warpList.put(name, new LocalWarp(name, location, player));
+        LocalWarp warp;
+
+        if ((warp = getWarp(name, location.getWorld())) != null) {
+            return warp;
+        }
+
+        warp = new LocalWarp(name, location);
+
+        warpList.get(location.getWorld().getName()).add(warp);
+        plugin.getPersistenceManager().saveWarp(warp);
+
+        return warp;
+    }
+
+    public LocalWarp addWarp(String name, Location location,Player player) {
+
+        LocalWarp warp;
+
+        if ((warp = getWarp(name, location.getWorld())) != null) {
+            return warp;
+        }
+
+        warp = new LocalWarp(name, location, player);
+
+        warpList.get(location.getWorld().getName()).add(warp);
+        plugin.getPersistenceManager().saveWarp(warp, player);
+
+        return warp;
+    }
+
+    public void removeWarp(LocalWarp warp) {
+        if (warp != null) {
+            plugin.getPersistenceManager().removeWarp(warp);
+            warpList.get(warp.getWorldName()).remove(warp);
         }
 
     }
 
-    public void removeWarp(String name) {
+    public LocalWarp getWarp(String name, World world) {
 
-        if (warpList.containsKey(name)) {
-            warpList.remove(name);
+        if (!warpList.containsKey(world.getName())) {
+            return null;
         }
 
+        for (LocalWarp entry : warpList.get(world.getName())) {
+
+            if (entry.getName().equals(name))
+                return entry;
+
+        }
+
+        return null;
     }
 
-    public LocalWarp getWarp(String name) {
-        return warpList.get(name);
+    public List<LocalWarp> getWarps(World world) {
+        return warpList.get(world.getName());
+    }
+
+    public void addWorld(World world) {
+        if (!warpList.containsKey(world.getName())) {
+            warpList.put(world.getName(), new ArrayList<LocalWarp>());
+        }
+    }
+
+    public void removeWorld(World world) {
+        if (warpList.containsKey(world.getName())) {
+            warpList.remove(world.getName());
+        }
     }
 
 }

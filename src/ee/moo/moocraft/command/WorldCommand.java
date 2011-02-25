@@ -90,6 +90,8 @@ public class WorldCommand extends AbstractCommand {
             env = World.Environment.NETHER;
         }
 
+        sender.sendMessage(ChatColor.BLUE + "Staring world generation...");
+
         world = plugin.getWorldManager().addWorld(args[1], env);
 
         String worldName = ChatColor.WHITE + world.getName() + ChatColor.WHITE;

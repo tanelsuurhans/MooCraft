@@ -45,12 +45,11 @@ public class TravelCommand extends AbstractCommand {
 
         }
 
-        Location spawn = world.getSpawnLocation();
-        Location location = new Location(world, spawn.getX(), spawn.getY(), spawn.getZ(), spawn.getYaw(), spawn.getPitch());
+        Player player = (Player) commandSender;
+        Location home = plugin.getPlayerManager().getHome(player, world);
 
-        ((Player) commandSender).teleportTo(location);
-
-        commandSender.sendMessage(ChatColor.GREEN + String.format("You have traveled to %s", ChatColor.WHITE + world.getName()));
+        player.teleportTo(home);
+        player.sendMessage(ChatColor.GREEN + String.format("You have traveled to %s", ChatColor.WHITE + world.getName()));
 
         return true;
     }
