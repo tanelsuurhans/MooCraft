@@ -69,14 +69,19 @@ public class MooCraft extends JavaPlugin {
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Low, this);
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_KICK, playerListener, Event.Priority.Low, this);
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_CHAT, playerListener, Event.Priority.Lowest, this);
+        getServer().getPluginManager().registerEvent(Event.Type.PLAYER_ITEM, playerListener, Event.Priority.Normal, this);
 
         getServer().getPluginManager().registerEvent(Event.Type.BLOCK_IGNITE, blockListener, Event.Priority.High, this);
         getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BURN, blockListener, Event.Priority.High, this);
-        getServer().getPluginManager().registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Event.Priority.High, this);
+        getServer().getPluginManager().registerEvent(Event.Type.BLOCK_RIGHTCLICKED, blockListener, Event.Priority.Normal, this);
+        getServer().getPluginManager().registerEvent(Event.Type.BLOCK_INTERACT, blockListener, Event.Priority.Normal, this);
+        getServer().getPluginManager().registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Event.Priority.Normal, this);
 
         getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DEATH, entityListener, Event.Priority.Normal, this);
         getServer().getPluginManager().registerEvent(Event.Type.ENTITY_COMBUST, entityListener, Event.Priority.High, this);
         getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGED, entityListener, Event.Priority.Normal, this);
+        
+        getServer().getPluginManager().registerEvent(Event.Type.CREATURE_SPAWN, entityListener, Event.Priority.Normal, this);
 
         getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_COLLISION_ENTITY, vehicleListener, Event.Priority.Normal, this);
         getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_COLLISION_BLOCK, vehicleListener, Event.Priority.Normal, this);
@@ -114,7 +119,9 @@ public class MooCraft extends JavaPlugin {
 
         try{
             return commandHandler.dispatch(command, sender, args);
-        } catch (CommandException e) {
+        } catch(org.bukkit.command.CommandException e) {
+            // ignore
+        } catch(CommandException e) {
             sender.sendMessage(ChatColor.RED + e.getMessage());
         }
 

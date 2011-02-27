@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: Tanel Suurhans
@@ -44,18 +45,18 @@ public class GodCommand extends AbstractCommand {
 
     private void listPlayers(CommandSender sender) {
 
-        ArrayList<String> players = new ArrayList<String>();
+        List<String> players = new ArrayList<String>();
 
         for (Player player : plugin.getServer().getOnlinePlayers()) {
 
-            if (plugin.getPlayerManager().hasGodMode(player)) {
+            if (plugin.getPlayerManager().getPlayer(player).isGod()) {
                 players.add(player.getDisplayName());
             }
 
         }
 
         if (players.isEmpty()) {
-            sender.sendMessage(ChatColor.GREEN + "No players with god mode online.");
+            sender.sendMessage(ChatColor.GREEN + "No players with god mode found.");
         } else {
             sender.sendMessage(ChatColor.GREEN + "Players with god mode: " + ChatColor.GOLD + players.size());
             sender.sendMessage(ChatColor.GRAY + StringUtil.join(players.toArray(), ", "));
@@ -70,14 +71,22 @@ public class GodCommand extends AbstractCommand {
             throw new CommandException(String.format("Cannot find player named %s.", args[0]));
         }
 
-        String message = ChatColor.GREEN + String.format("God mode for %s is ", ChatColor.WHITE + target.getDisplayName() + ChatColor.GREEN);
+        StringBuilder builder = new StringBuilder();
 
-        if (plugin.getPlayerManager().hasGodMode(target)) {
-            sender.sendMessage(String.format(message + "%s", ChatColor.WHITE + "on"));
+        builder.append(ChatColor.GREEN);
+        builder.append("God mode for ");
+        builder.append(ChatColor.WHITE);
+        builder.append(target.getDisplayName());
+        builder.append(ChatColor.GREEN);
+        builder.append(": ");
+
+        if (plugin.getPlayerManager().getPlayer(target).isGod()) {
+            builder.append(ChatColor.GOLD + "ON");
         } else {
-            sender.sendMessage(String.format(message + "%s", ChatColor.WHITE + "off"));
+            builder.append(ChatColor.RED + "OFF");
         }
 
+        sender.sendMessage(builder.toString());
     }
 
     private void setPlayer(CommandSender sender, String[] args) throws CommandException {
@@ -88,9 +97,9 @@ public class GodCommand extends AbstractCommand {
 
         boolean isGod;
 
-        if (args[1].equals("enable") || args[1].equals("on") || args[1].equals("true")) {
+        if (args[1].matches("enable|on|true")) {
             isGod = true;
-        } else if (args[1].equals("disable") || args[1].equals("off") || args[1].equals("false")) {
+        } else if (args[1].matches("disable|off|false")) {
             isGod = false;
         } else {
             throw new CommandException("Invalid command argument");
@@ -102,10 +111,28 @@ public class GodCommand extends AbstractCommand {
             throw new CommandException(String.format("Cannot find player named %s", args[0]));
         }
 
-        plugin.getPlayerManager().setGodMode(target, isGod);
+        plugin.getPlayerManager().getPlayer(target).setGod(isGod);
 
-        /** send the messages */
-        this.getPlayer(sender, args);
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(ChatColor.GREEN);
+        builder.append("God mode for");
+        builder.append(ChatColor.WHITE);
+        builder.append(target.getDisplayName());
+        builder.append(ChatColor.GREEN);
+        builder.append(" is now ");
+
+        if (isGod) {
+            builder.append(ChatColor.GOLD);
+            builder.append("ON");
+        } else {
+            builder.append(ChatColor.RED);
+            builder.append("OFF");
+        }
+
+        sender.sendMessage(builder.toString());
+
+
     }
 
     @Override

@@ -1,7 +1,11 @@
 package ee.moo.moocraft.listener;
 
 import ee.moo.moocraft.MooCraft;
+import ee.moo.moocraft.model.LocalPlayer;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.*;
 
@@ -31,11 +35,10 @@ public class MooEntityListener extends EntityListener {
 
         if (event.getEntity() instanceof Player) {
 
-            Player player = (Player) event.getEntity();
+            LocalPlayer player = plugin.getPlayerManager().getPlayer((Player) event.getEntity());
 
-            if (plugin.getPlayerManager().hasGodMode(player)) {
+            if (player.isGod())
                 event.setCancelled(true);
-            }
 
         }
 
@@ -46,15 +49,28 @@ public class MooEntityListener extends EntityListener {
 
         if (event.getEntity() instanceof Player) {
 
-            Player player = (Player) event.getEntity();
+            LocalPlayer player = plugin.getPlayerManager().getPlayer((Player) event.getEntity());
 
+            if (player.isGod())
+                event.setCancelled(true);
 
-            if (plugin.getPlayerManager().hasGodMode(player)) {
+        }
+
+    }
+
+    @Override
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+
+        if (event.getEntity() instanceof Monster) {
+
+            Block block = event.getLocation().getBlock();
+            Material type = block.getType();
+
+            if (type == Material.LEAVES || type == Material.LOG) {
                 event.setCancelled(true);
             }
 
         }
 
     }
-    
 }

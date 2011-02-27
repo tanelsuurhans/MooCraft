@@ -128,7 +128,18 @@ commands:
                 /warp [name]
 
     spawn:
-        description: spawn a mob or animal
+        description: Spawn a mob or animal
         usage:  |
                 /spawn [name]
+
+    tool:
+        description: Tools for querying, water fixing, fire extinguishing, snow plowing
+        usage:  |
+                /tool check
+                /tool query
+                /tool water
+                /tool fire
+                /tool snow
+                /tool scan
+                /tool radius [amount]
 

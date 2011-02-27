@@ -82,13 +82,13 @@ public class PersistenceManager {
 
     }
 
-    public void removeHome(Location location) {
+    public void removeHome(World world) {
 
         try {
 
             PreparedStatement query = database.prepare("DELETE FROM homes WHERE world = ?;");
 
-            query.setString(1, location.getWorld().getName());
+            query.setString(1, world.getName());
             query.executeUpdate();
 
         } catch (SQLException e) {

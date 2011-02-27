@@ -1,6 +1,7 @@
 package ee.moo.moocraft.command;
 
 import ee.moo.moocraft.MooCraft;
+import ee.moo.moocraft.model.LocalPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -45,10 +46,10 @@ public class TravelCommand extends AbstractCommand {
 
         }
 
-        Player player = (Player) commandSender;
-        Location home = plugin.getPlayerManager().getHome(player, world);
 
-        player.teleportTo(home);
+        LocalPlayer player = plugin.getPlayerManager().getPlayer((Player) commandSender);
+
+        player.teleportHome(world);
         player.sendMessage(ChatColor.GREEN + String.format("You have traveled to %s", ChatColor.WHITE + world.getName()));
 
         return true;

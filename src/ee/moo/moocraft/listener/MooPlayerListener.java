@@ -1,7 +1,10 @@
 package ee.moo.moocraft.listener;
 
 import ee.moo.moocraft.MooCraft;
+import ee.moo.moocraft.model.LocalPlayer;
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.*;
 
 import java.text.DateFormat;
@@ -48,6 +51,17 @@ public class MooPlayerListener extends PlayerListener {
 
     @Override
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        event.getPlayer().teleportTo(plugin.getPlayerManager().getHome(event.getPlayer()));
+        plugin.getPlayerManager().getPlayer(event.getPlayer()).teleportHome();
+    }
+
+    @Override
+    public void onPlayerItem(PlayerItemEvent event) {
+
+        LocalPlayer player = plugin.getPlayerManager().getPlayer(event.getPlayer());
+
+        if (player.hasToolEquipped() && player.getTool().isRightClick()) {
+            player.getTool().perform(player, event.getBlockClicked());
+        }
+
     }
 }

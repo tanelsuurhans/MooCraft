@@ -25,8 +25,8 @@ public class GiveCommand extends AbstractCommand {
         }
 
         Material material = Material.matchMaterial(args[0]);
+        Player  target = (Player) commandSender;
         Integer amount = 1;
-        Player target = (Player) commandSender;
 
         if (material == null) {
             throw new CommandException(String.format("Unknown item with ID %s.", args[0]));
