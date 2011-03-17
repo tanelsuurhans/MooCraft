@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.util.Vector;
 
 import java.net.InetSocketAddress;
 import java.util.HashSet;
@@ -70,10 +71,6 @@ public abstract class BasePlayer implements Player {
 
     public boolean isOp() {
         return player.isOp();
-    }
-
-    public boolean isPlayer() {
-        return player.isPlayer();
     }
 
     public String getName() {
@@ -198,5 +195,29 @@ public abstract class BasePlayer implements Player {
 
     public Server getServer() {
         return player.getServer();
+    }
+
+    public void damage(int amount) {
+        player.damage(amount);
+    }
+
+    public void damage(int amount, Entity source) {
+        player.damage(amount, source);
+    }
+
+    public void setVelocity(Vector velocity) {
+        player.setVelocity(velocity);
+    }
+
+    public Vector getVelocity() {
+        return player.getVelocity();
+    }
+
+    public void sendRawMessage(String message) {
+        player.sendRawMessage(message);
+    }
+
+    public Location getEyeLocation() {
+        return player.getEyeLocation();
     }
 }
