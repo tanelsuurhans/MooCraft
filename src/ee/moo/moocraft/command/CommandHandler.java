@@ -1,11 +1,9 @@
 package ee.moo.moocraft.command;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * User: Tanel Suurhans
@@ -18,7 +19,7 @@ import java.util.Map;
 public class WarpManager {
 
     private MooCraft plugin;
-    private HashMap<String, List<LocalWarp>> warpList = new HashMap<String, List<LocalWarp>>();
+    private ConcurrentHashMap<String, List<LocalWarp>> warpList = new ConcurrentHashMap<String, List<LocalWarp>>();
 
     public WarpManager(MooCraft plugin) {
         this.plugin = plugin;

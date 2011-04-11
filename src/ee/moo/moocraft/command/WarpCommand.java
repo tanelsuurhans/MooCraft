@@ -2,7 +2,6 @@ package ee.moo.moocraft.command;
 
 import ee.moo.moocraft.MooCraft;
 import ee.moo.moocraft.model.LocalWarp;
-import ee.moo.moocraft.util.StringUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,29 +31,29 @@ public class WarpCommand extends AbstractCommand {
         }
 
         Player player = (Player) commandSender;
+        String subCommand = args[0].toUpperCase();
 
         if (args.length == 2) {
 
-            switch (Arguments.valueOf(args[0].toUpperCase())) {
+            if (subCommand.equalsIgnoreCase("create")) {
 
-                case CREATE:
-                    this.createWarp(player, args, false);
-                    break;
-                case PRIVATE:
-                    this.createWarp(player, args, true);
-                    break;
-                case REMOVE:
-                    this.removeWarp(player, args);
-                    break;
-                default:
-                    return false;
+                this.createWarp(player, args,  false);
 
+            } else if (subCommand.equalsIgnoreCase("private")) {
+
+                this.createWarp(player, args, true);
+
+            } else if (subCommand.equalsIgnoreCase("remove")) {
+
+                this.removeWarp(player, args);
+
+            } else {
+                return false;
             }
-
 
         } else {
 
-            if (args[0].equals("list")) {
+            if (subCommand.equalsIgnoreCase("list")) {
 
                 List<LocalWarp> warps = new ArrayList<LocalWarp>();
 
@@ -67,15 +66,7 @@ public class WarpCommand extends AbstractCommand {
                 commandSender.sendMessage(ChatColor.GREEN + String.format("Total warps in this world: %s", ChatColor.WHITE + String.valueOf(warps.size())));
 
                 for (LocalWarp warp : warps) {
-
-                    StringBuilder string = new StringBuilder();
-
-                    string.append(ChatColor.GOLD).append(warp.getName()).append(" ");
-                    string.append(ChatColor.GREEN).append("X: ").append(ChatColor.WHITE).append(warp.getLocation().getX()).append(" ");
-                    string.append(ChatColor.GREEN).append("Y: ").append(ChatColor.WHITE).append(warp.getLocation().getX()).append(" ");
-                    string.append(ChatColor.GREEN).append("Z: ").append(ChatColor.WHITE).append(warp.getLocation().getX()).append(" ");
-
-                    commandSender.sendMessage(string.toString());
+                    commandSender.sendMessage(warp.getName());
                 }
 
             } else {
@@ -90,7 +81,7 @@ public class WarpCommand extends AbstractCommand {
                     throw new CommandException(String.format("Warp %s is a private warp.", warp.getName()));
                 }
 
-                player.teleportTo(warp.getLocation());
+                player.teleport(warp.getLocation());
 
             }
 

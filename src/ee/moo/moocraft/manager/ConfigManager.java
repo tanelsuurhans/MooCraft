@@ -1,10 +1,8 @@
 package ee.moo.moocraft.manager;
 
 import ee.moo.moocraft.MooCraft;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 

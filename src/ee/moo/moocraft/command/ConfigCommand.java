@@ -14,12 +14,6 @@ public class ConfigCommand extends AbstractCommand {
         super(plugin);
     }
 
-    private enum Arguments {
-        LOAD,
-        SAVE,
-        GET,
-    }
-
     @Override
     public boolean execute(CommandSender commandSender, String command, String[] args) throws CommandException {
 
@@ -28,18 +22,22 @@ public class ConfigCommand extends AbstractCommand {
             return false;
         }
 
-        switch(Arguments.valueOf(args[0].toUpperCase())) {
-            case LOAD:
-                this.loadConfig(commandSender);
-                break;
-            case SAVE:
-                this.saveConfig(commandSender);
-                break;
-            case GET:
-                this.getConfig(commandSender, args);
-                break;
-            default:
-                return false;
+        String subCommand = args[0].toUpperCase();
+
+        if (subCommand.equalsIgnoreCase("load")) {
+
+            this.loadConfig(commandSender);
+
+        } else if(subCommand.equalsIgnoreCase("save")) {
+
+            this.saveConfig(commandSender);
+
+        } else if(subCommand.equalsIgnoreCase("get")) {
+
+            this.getConfig(commandSender, args);
+
+        } else {
+            return false;
         }
 
         return true;
@@ -62,7 +60,11 @@ public class ConfigCommand extends AbstractCommand {
 
     }
 
-    private void getConfig(CommandSender sender, String[] args) {
+    private void getConfig(CommandSender sender, String[] args) throws CommandException {
+
+        if (args.length < 2) {
+            throw new CommandException("Configuration key missing.");
+        }
 
         Object value = plugin.getConfigManager().get(args[1]);
 

@@ -8,7 +8,7 @@ description:
 commands:
     give:
         description: Give yourself or someone else items
-        usage: /give [item] [amount] [player]
+        usage: /give [player] [item] [amount]
 
     teleport:
         aliases: tp
@@ -141,5 +141,6 @@ commands:
                 /tool fire
                 /tool snow
                 /tool scan
+                /tool nuke
                 /tool radius [amount]
 

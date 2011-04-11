@@ -37,6 +37,82 @@ public abstract class BasePlayer implements Player {
         player.setCompassTarget(loc);
     }
 
+    public Location getCompassTarget() {
+        return player.getCompassTarget();
+    }
+
+    public void saveData() {
+        player.saveData();
+    }
+
+    public void loadData() {
+        player.loadData();
+    }
+
+    public int getMaximumNoDamageTicks() {
+        return player.getMaximumNoDamageTicks();
+    }
+
+    public void setMaximumNoDamageTicks(int ticks) {
+        player.setMaximumNoDamageTicks(ticks);
+    }
+
+    public int getLastDamage() {
+        return player.getLastDamage();
+    }
+
+    public void setLastDamage(int damage) {
+        player.setLastDamage(damage);
+    }
+
+    public int getNoDamageTicks() {
+        return player.getNoDamageTicks();
+    }
+
+    public void setNoDamageTicks(int ticks) {
+        player.setNoDamageTicks(ticks);
+    }
+
+    public boolean teleport(Location location) {
+        return player.teleport(location);
+    }
+
+    public boolean teleport(Entity destination) {
+        return player.teleport(destination);
+    }
+
+    public List<Entity> getNearbyEntities(double x, double y, double z) {
+        return player.getNearbyEntities(x, y, z);
+    }
+
+    public boolean isDead() {
+        return player.isDead();
+    }
+
+    public Entity getPassenger() {
+        return player.getPassenger();
+    }
+
+    public boolean setPassenger(Entity passenger) {
+        return player.setPassenger(passenger);
+    }
+
+    public boolean isEmpty() {
+        return player.isEmpty();
+    }
+
+    public boolean eject() {
+        return player.eject();
+    }
+
+    public float getFallDistance() {
+        return player.getFallDistance();
+    }
+
+    public void setFallDistance(float distance) {
+        player.setFallDistance(distance);
+    }
+
     public InetSocketAddress getAddress() {
         return player.getAddress();
     }

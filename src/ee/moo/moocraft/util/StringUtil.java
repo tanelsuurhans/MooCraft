@@ -1,8 +1,5 @@
 package ee.moo.moocraft.util;
 
-import org.bukkit.ChatColor;
-
-import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -21,26 +18,26 @@ public class StringUtil {
         return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }
 
-    public static String join(String[] tokens) {
+    public static String join(Collection<String> tokens) {
         return join(tokens, " ");
     }
 
-    public static String join(Object[] tokens, String separator) {
+    public static String join(Collection<String> tokens, String separator) {
 
-        if (tokens == null || tokens.length == 0) {
-            return "";
-        } else if (tokens.length == 1) {
-            return (String) tokens[0];
+        StringBuilder builder = new StringBuilder();
+        Iterator iterator = tokens.iterator();
+
+        while (iterator.hasNext()) {
+            builder.append(iterator.next());
+
+            if (!iterator.hasNext()) {
+            break;
+            }
+
+            builder.append(separator);
         }
 
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (Object token : tokens) {
-            stringBuilder.append(separator);
-            stringBuilder.append((String) token);
-        }
-
-        return stringBuilder.toString();
+        return builder.toString();
     }
 
 }

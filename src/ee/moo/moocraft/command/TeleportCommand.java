@@ -89,7 +89,7 @@ public class TeleportCommand extends AbstractCommand {
 
     private void teleportPlayer(Player source, Player target, CommandSender sender) {
 
-        source.teleportTo(target);
+        source.teleport(target);
         sender.sendMessage(ChatColor.GREEN + String.format("Teleported %s to player %s.", source.getDisplayName(), target.getDisplayName()));
 
     }
@@ -123,7 +123,7 @@ public class TeleportCommand extends AbstractCommand {
 
         String coordinates = String.format("%s:%s:%s", location.getX(), location.getY(), location.getZ());
 
-        target.teleportTo(location);
+        target.teleport(location);
         sender.sendMessage(ChatColor.GREEN + String.format("Teleported %s to location %s", target.getDisplayName(), coordinates));
 
     }

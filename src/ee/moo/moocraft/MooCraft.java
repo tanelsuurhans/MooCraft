@@ -3,11 +3,11 @@ package ee.moo.moocraft;
 import ee.moo.moocraft.command.AbstractCommand;
 import ee.moo.moocraft.command.CommandException;
 import ee.moo.moocraft.command.CommandHandler;
-import ee.moo.moocraft.listener.MooVehicleListener;
-import ee.moo.moocraft.manager.*;
 import ee.moo.moocraft.listener.MooBlockListener;
 import ee.moo.moocraft.listener.MooEntityListener;
 import ee.moo.moocraft.listener.MooPlayerListener;
+import ee.moo.moocraft.listener.MooVehicleListener;
+import ee.moo.moocraft.manager.*;
 import ee.moo.moocraft.util.StringUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -27,6 +27,7 @@ public class MooCraft extends JavaPlugin {
 
     private final CommandHandler commandHandler = new CommandHandler();
 
+    private MinecartManager minecartManager = new MinecartManager(this);
     private ConfigManager configManager = new ConfigManager(this);
     private PlayerManager playerManager = new PlayerManager(this);
     private WorldManager worldManager = new WorldManager(this);
@@ -49,6 +50,7 @@ public class MooCraft extends JavaPlugin {
         playerManager.disable();
         worldManager.disable();
         warpManager.disable();
+        minecartManager.disable();
 
         persistenceManager.disable();
 
@@ -64,28 +66,31 @@ public class MooCraft extends JavaPlugin {
         worldManager.enable();
         playerManager.enable();
         warpManager.enable();
+        minecartManager.enable();
 
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, playerListener, Event.Priority.Low, this);
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Low, this);
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_KICK, playerListener, Event.Priority.Low, this);
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_CHAT, playerListener, Event.Priority.Lowest, this);
-        getServer().getPluginManager().registerEvent(Event.Type.PLAYER_ITEM, playerListener, Event.Priority.Normal, this);
+        getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
 
         getServer().getPluginManager().registerEvent(Event.Type.BLOCK_IGNITE, blockListener, Event.Priority.High, this);
         getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BURN, blockListener, Event.Priority.High, this);
-        getServer().getPluginManager().registerEvent(Event.Type.BLOCK_RIGHTCLICKED, blockListener, Event.Priority.Normal, this);
-        getServer().getPluginManager().registerEvent(Event.Type.BLOCK_INTERACT, blockListener, Event.Priority.Normal, this);
-        getServer().getPluginManager().registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Event.Priority.Normal, this);
+        getServer().getPluginManager().registerEvent(Event.Type.BLOCK_CANBUILD, blockListener, Event.Priority.Normal, this);
+        getServer().getPluginManager().registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Event.Priority.Normal, this);
+        getServer().getPluginManager().registerEvent(Event.Type.REDSTONE_CHANGE, blockListener, Event.Priority.Normal, this);
 
         getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DEATH, entityListener, Event.Priority.Normal, this);
         getServer().getPluginManager().registerEvent(Event.Type.ENTITY_COMBUST, entityListener, Event.Priority.High, this);
-        getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGED, entityListener, Event.Priority.Normal, this);
+        getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Event.Priority.Normal, this);
         
         getServer().getPluginManager().registerEvent(Event.Type.CREATURE_SPAWN, entityListener, Event.Priority.Normal, this);
 
         getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_COLLISION_ENTITY, vehicleListener, Event.Priority.Normal, this);
         getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_COLLISION_BLOCK, vehicleListener, Event.Priority.Normal, this);
-        getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_DAMAGE, vehicleListener, Event.Priority.High, this);
+        getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_DAMAGE, vehicleListener, Event.Priority.Normal, this);
+        getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_UPDATE, vehicleListener, Event.Priority.Normal, this);
+        getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_MOVE, vehicleListener, Event.Priority.Normal, this);
 
         /** automatically load commands */
         for (Object obj : ((LinkedHashMap) getDescription().getCommands()).keySet()) {
@@ -146,6 +151,10 @@ public class MooCraft extends JavaPlugin {
 
     public WarpManager getWarpManager() {
         return this.warpManager;
+    }
+
+    public MinecartManager getMinecartManager() {
+        return this.minecartManager;
     }
 
     public void log(Level level, String output) {

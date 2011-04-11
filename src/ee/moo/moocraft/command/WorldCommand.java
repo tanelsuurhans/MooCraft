@@ -13,10 +13,6 @@ import org.bukkit.entity.Player;
  */
 public class WorldCommand extends AbstractCommand {
 
-    private enum Arguments {
-        LIST, CREATE, DELETE
-    }
-
     public WorldCommand(MooCraft plugin) {
         super(plugin);
     }
@@ -34,18 +30,22 @@ public class WorldCommand extends AbstractCommand {
 
         } else {
 
-            switch (Arguments.valueOf(args[0].toUpperCase())) {
-                case LIST:
-                    this.listWorlds(commandSender);
-                    break;
-                case CREATE:
-                    this.createWorld(commandSender, args);
-                    break;
-                case DELETE:
-                    this.deleteWorld(commandSender, args);
-                    break;
-                default:
-                    return false;
+            String subCommand = args[0].toUpperCase();
+
+            if (subCommand.equalsIgnoreCase("list")) {
+
+                this.listWorlds(commandSender);
+
+            } else if (subCommand.equalsIgnoreCase("create")) {
+
+                this.createWorld(commandSender, args);
+
+            } else if(subCommand.equalsIgnoreCase("delete")) {
+
+                this.deleteWorld(commandSender, args);
+
+            } else {
+                return false;
             }
 
         }

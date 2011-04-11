@@ -42,7 +42,11 @@ public class NukeTool extends Tool {
                 }
 
                 break;
-            
+
+            case COAL_ORE:
+                nukeBlock(blockClicked, Material.COAL);
+                break;
+
             case DIAMOND_ORE:
                 nukeBlock(blockClicked, Material.DIAMOND);
                 break;
@@ -100,7 +104,6 @@ public class NukeTool extends Tool {
             
             case SAND:
             case SANDSTONE:
-            case COAL_ORE:
             case GOLD_ORE:
             case IRON_ORE:
             case WOOD:

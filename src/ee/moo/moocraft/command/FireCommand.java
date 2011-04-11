@@ -10,10 +10,6 @@ import org.bukkit.command.CommandSender;
  */
 public class FireCommand extends AbstractCommand {
 
-    private enum Arguments {
-        BURN, SPREAD, ENABLE, DISABLE
-    }
-
     public FireCommand(MooCraft plugin) {
         super(plugin);
     }
@@ -32,30 +28,34 @@ public class FireCommand extends AbstractCommand {
 
         } else if(args.length == 1) {
 
-            switch(Arguments.valueOf(args[0].toUpperCase())) {
+            String subCommand = args[0].toUpperCase();
 
-                case BURN:
-                    this.burnEnabled(commandSender);
-                    break;
-                case SPREAD:
-                    this.spreadEnabled(commandSender);
-                    break;
-                case ENABLE:
-                    this.changeBurn(commandSender, true);
-                    this.changeSpread(commandSender, true);
-                    break;
-                case DISABLE:
-                    this.changeBurn(commandSender, false);
-                    this.changeSpread(commandSender, false);
-                    break;
-                default:
-                    return false;
+            if (subCommand.equalsIgnoreCase("burn")) {
 
+                this.burnEnabled(commandSender);
+
+            } else if(subCommand.equalsIgnoreCase("spread")) {
+
+                this.spreadEnabled(commandSender);
+
+            } else if (subCommand.equalsIgnoreCase("enable")) {
+
+                this.changeBurn(commandSender, true);
+                this.changeSpread(commandSender, true);
+
+            } else if (subCommand.equalsIgnoreCase("disable")) {
+
+                this.changeBurn(commandSender, false);
+                this.changeSpread(commandSender, false);
+
+            } else {
+                return false;
             }
 
 
         } else if(args.length == 2) {
 
+            String subCommand = args[0].toUpperCase();
             String value = args[1].toLowerCase();
 
             if (!value.equals("enable") && !value.equals("disable")) {
@@ -64,16 +64,13 @@ public class FireCommand extends AbstractCommand {
 
             boolean state = value.equals("enable");
 
-            switch(Arguments.valueOf(args[0].toUpperCase())) {
+            if (subCommand.equalsIgnoreCase("burn")) {
 
-                case BURN:
-                    this.changeBurn(commandSender, state);
-                    break;
-                case SPREAD:
-                    this.changeSpread(commandSender, state);
-                    break;
-                default:
-                    return false;
+                this.changeBurn(commandSender, state);
+
+            } else if(subCommand.equalsIgnoreCase("spread")) {
+
+                this.changeSpread(commandSender, state);
 
             }
 

@@ -2,7 +2,6 @@ package ee.moo.moocraft.command;
 
 import ee.moo.moocraft.MooCraft;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
 
 /**
  * User: Tanel Suurhans

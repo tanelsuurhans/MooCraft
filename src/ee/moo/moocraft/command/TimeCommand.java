@@ -38,9 +38,13 @@ public class TimeCommand extends AbstractCommand {
             String dayTime = args[0];
 
             if (dayTime.equalsIgnoreCase("day")) {
+
                 sender.getWorld().setTime(TIME_NIGHT);
+
             } else if (dayTime.equalsIgnoreCase("night")) {
+
                 sender.getWorld().setTime(TIME_DAY);
+
             } else {
                 return false;
             }

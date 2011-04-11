@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * User: Tanel Suurhans
@@ -14,7 +15,7 @@ import java.util.HashMap;
 public class PlayerManager {
 
     private MooCraft plugin;
-    private static HashMap<Integer, LocalPlayer> playerList = new HashMap<Integer, LocalPlayer>();
+    private static ConcurrentHashMap<Integer, LocalPlayer> playerList = new ConcurrentHashMap<Integer, LocalPlayer>();
 
     public PlayerManager(MooCraft plugin) {
         this.plugin = plugin;

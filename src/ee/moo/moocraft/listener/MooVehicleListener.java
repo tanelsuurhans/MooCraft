@@ -4,14 +4,14 @@ import ee.moo.moocraft.MooCraft;
 import ee.moo.moocraft.model.LocalMinecart;
 import net.minecraft.server.EntityBoat;
 import net.minecraft.server.EntityLiving;
-import net.minecraft.server.EntityMinecart;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.entity.CraftBoat;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.entity.CraftMinecart;
 import org.bukkit.entity.*;
 import org.bukkit.event.vehicle.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 /**
  * User: Tanel Suurhans
@@ -41,16 +41,8 @@ public class MooVehicleListener extends VehicleListener {
 
                 if (cart.isMoving()) {
 
-                    try {
-					    EntityLiving el = ((CraftLivingEntity) entity).getHandle();
-
-                        // die and drop loot
-                        // remove
-						el.a(cart.getHandle());
-                        el.C();
-                    } catch (Exception e) {
-                        entity.setHealth(0);
-                    }
+                    entity.damage(entity.getHealth(), cart);
+                    entity.remove();
 
                 }
 
@@ -61,12 +53,6 @@ public class MooVehicleListener extends VehicleListener {
 
         }
 
-    }
-
-    @Override
-    public void onVehicleBlockCollision(VehicleBlockCollisionEvent event) {
-        System.out.println(event.getBlock());
-        System.out.println(event.getVehicle());
     }
 
     @Override
@@ -86,19 +72,19 @@ public class MooVehicleListener extends VehicleListener {
 
         } else if (event.getVehicle() instanceof Minecart) {
 
-            CraftMinecart craftCart = (CraftMinecart) event.getVehicle();
-            EntityMinecart entityCart = (EntityMinecart) craftCart.getHandle();
+            LocalMinecart minecart = plugin.getMinecartManager().getMinecart(event.getVehicle());
 
-            if (entityCart.a * 10 > 40) {
+            if (minecart.getDamage() > 40) {
 
-                /** TODO: bukkit support */
-                if (entityCart.d == CraftMinecart.Type.PoweredMinecart.getId()) {
-                    event.getAttacker().getWorld().dropItemNaturally(craftCart.getLocation(), new ItemStack(Material.POWERED_MINECART, 1));
-                } else if (entityCart.d == CraftMinecart.Type.StorageMinecart.getId()) {
-                    event.getAttacker().getWorld().dropItemNaturally(craftCart.getLocation(), new ItemStack(Material.STORAGE_MINECART, 1));
-                } else {
-                    event.getAttacker().getWorld().dropItemNaturally(craftCart.getLocation(), new ItemStack(Material.MINECART, 1));
+                if (minecart.isPowered()) {
+                    event.getAttacker().getWorld().dropItemNaturally(minecart.getLocation(), new ItemStack(Material.POWERED_MINECART, 1));
+                } else if (minecart.isStorage()) {
+                    event.getAttacker().getWorld().dropItemNaturally(minecart.getLocation(), new ItemStack(Material.STORAGE_MINECART, 1));
+                } else {                    
+                    event.getAttacker().getWorld().dropItemNaturally(minecart.getLocation(), new ItemStack(Material.MINECART, 1));
                 }
+
+                plugin.getMinecartManager().removeMinecart(minecart);
 
                 event.getVehicle().remove();
                 event.setCancelled(true);
@@ -108,4 +94,56 @@ public class MooVehicleListener extends VehicleListener {
 
     }
 
+    @Override
+    public void onVehicleMove(VehicleMoveEvent event) {
+
+        if (event.getVehicle() instanceof Minecart) {
+
+            LocalMinecart minecart = plugin.getMinecartManager().getMinecart(event.getVehicle());
+
+            Block currentBlock = minecart.getLocation().getBlock();
+            Block previousBlock = minecart.getPreviousLocation().getBlock();
+
+            if (currentBlock.getType() == Material.WOOD_PLATE || currentBlock.getType() == Material.STONE_PLATE) {
+                minecart.setDerailedVelocityMod(new Vector(1, 1, 1));
+            } else if (previousBlock.getType() == Material.WOOD_PLATE || previousBlock.getType() == Material.STONE_PLATE) {
+                minecart.setDerailedVelocityMod(new Vector(0.5D, 0.5D, 0.5D));
+            }
+
+            minecart.update();
+
+        }
+
+    }
+
+    @Override
+    public void onVehicleUpdate(VehicleUpdateEvent event) {
+
+        if (event.getVehicle() instanceof Minecart) {
+
+            LocalMinecart minecart = plugin.getMinecartManager().getMinecart(event.getVehicle());
+            Block block = minecart.getBlockBelow(2);
+
+            if (block.getType() == Material.IRON_BLOCK) {
+
+                if (minecart.isMoving()) {
+                    minecart.setSpeed(0.1D);
+                } else if (!minecart.isEmpty()) {
+                    minecart.setVelocity(minecart.getPassenger().getLocation().getDirection());
+                    minecart.setSpeed(0.1D);
+                }
+
+            } else if (block.getType() == Material.GOLD_BLOCK) {
+
+                if (minecart.isMoving()) {
+                    minecart.doubleSpeed();
+                }
+
+            } else if (block.getType() == Material.WOOL) {
+
+            }
+
+        }
+
+    }
 }

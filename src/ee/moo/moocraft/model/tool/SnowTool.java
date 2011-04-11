@@ -4,13 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-import org.bukkit.util.BlockVector;
-import org.bukkit.util.Vector;
-
-import java.util.HashSet;
-import java.util.Stack;
 
 /**
  * User: Tanel Suurhans
@@ -26,12 +20,17 @@ public class SnowTool extends Tool {
         Block block = getTargetBlock(player);
         Location location = block.getLocation();
 
-        int px = location.getBlockX();
-        int pz = location.getBlockZ();
+        int minX = location.getBlockX() - (getRadius() - 1);
+        int minZ = location.getBlockZ() - (getRadius() - 1);
 
-        for (int x = px - 1; x <= px + 1; x++) {
-            for (int z = pz - 1; z <= pz + 1; z++) {
-                for (int y = 127; y <= 1; y--) {
+        int maxX = location.getBlockX() + (getRadius() - 1);
+        int maxZ = location.getBlockZ() + (getRadius() - 1);
+
+
+        for (int x = minX; x <= maxX; x++) {
+            for (int z = minZ; z <= maxZ; z++) {
+
+                for (int y = 127; y >= 1; y--) {
 
                     Block obj = location.getWorld().getBlockAt(x, y, z);
 

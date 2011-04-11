@@ -20,37 +20,31 @@ public class GiveCommand extends AbstractCommand {
     @Override
     public boolean execute(CommandSender commandSender, String command, String[] args) throws CommandException {
 
-        if (args.length == 0 || args.length > 3) {
+        if (args.length < 2 || args.length > 3) {
             return false;
         }
 
-        Material material = Material.matchMaterial(args[0]);
-        Player  target = (Player) commandSender;
+        Material material = Material.matchMaterial(args[1]);
+        Player target = plugin.getServer().getPlayer(args[0]);
         Integer amount = 1;
 
-        if (material == null) {
-            throw new CommandException(String.format("Unknown item with ID %s.", args[0]));
+        if (target == null) {
+            throw new CommandException(String.format("%s is not a valid player name.", args[0]));
         }
 
-        if (args.length >= 2) {
-
-            try {
-                amount = Integer.parseInt(args[1]);
-            } catch(NumberFormatException e) {
-                throw new CommandException(String.format("%s is not a valid number.", args[1]));
-            }
-
-            amount = Math.min(amount, 64);
+        if (material == null) {
+            throw new CommandException(String.format("Unknown item with ID %s.", args[1]));
         }
 
         if (args.length == 3) {
 
-            target = plugin.getServer().getPlayer(args[2]);
-
-            if (target == null) {
-                throw new CommandException(String.format("%s is not a valid player name.", args[2]));
+            try {
+                amount = Integer.parseInt(args[2]);
+            } catch(NumberFormatException e) {
+                throw new CommandException(String.format("%s is not a valid number.", args[2]));
             }
 
+            amount = Math.min(amount, 64);
         }
 
         if (target.getInventory().firstEmpty() < 0) {

@@ -2,16 +2,10 @@ package ee.moo.moocraft.listener;
 
 import ee.moo.moocraft.MooCraft;
 import ee.moo.moocraft.model.LocalPlayer;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.*;
-import org.bukkit.inventory.ItemStack;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 import static org.bukkit.Material.*;
 
@@ -54,24 +48,13 @@ public class MooBlockListener extends BlockListener {
     }
 
     @Override
-    public void onBlockRightClick(BlockRightClickEvent event) {
+    public void onBlockCanBuild(BlockCanBuildEvent event) {
 
-        if (event.getItemInHand().getType() == FENCE) {
+        System.out.println(event.getMaterial());
+        System.out.println(event.getBlock().getType());
 
-            Block target = event.getBlock().getFace(event.getDirection(), 1);
-
-            if (target.getType() == AIR) {
-                target.setType(event.getItemInHand().getType());
-
-                if (event.getItemInHand().getAmount() > 1) {
-                    event.getItemInHand().setAmount(event.getItemInHand().getAmount() - 1);
-                } else {
-                    event.getPlayer().getInventory().remove(event.getItemInHand());
-                }
-
-                event.getItemInHand().setAmount(event.getItemInHand().getAmount() - 1);
-            }
-
+        if (event.getMaterial() == Material.FENCE && event.getBlock().getType() == AIR) {
+            event.setBuildable(true);
         }
 
     }
@@ -85,6 +68,11 @@ public class MooBlockListener extends BlockListener {
             player.getTool().perform(player, event.getBlock());
         }
 
+    }
+
+    @Override
+    public void onBlockRedstoneChange(BlockRedstoneEvent event) {
 
     }
+    
 }

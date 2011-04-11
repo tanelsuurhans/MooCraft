@@ -2,11 +2,13 @@ package ee.moo.moocraft.database;
 
 import ee.moo.moocraft.MooCraft;
 
-import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * User: Tanel Suurhans

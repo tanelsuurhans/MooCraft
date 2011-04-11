@@ -13,9 +13,7 @@ import org.bukkit.entity.Player;
  */
 public class ToolCommand extends AbstractCommand {
 
-    private enum Arguments {
-        QUERY, WATER, FIRE, SNOW, SCAN, RADIUS, CHECK, NUKE
-    }
+    private static int MAX_RADIUS = 100;
 
     public ToolCommand(MooCraft plugin) {
         super(plugin);
@@ -30,33 +28,42 @@ public class ToolCommand extends AbstractCommand {
             return false;
         }
 
-        switch (Arguments.valueOf(args[0].toUpperCase())) {
-            case QUERY:
-                this.handleQueryTool(player);
-                break;
-            case WATER:
-                this.handleWaterTool(player);
-                break;
-            case FIRE:
-                this.handleFireTool(player);
-                break;
-            case SNOW:
-                this.handleSnowTool(player);
-                break;
-            case SCAN:
-                this.handleScan(player, args);
-                break;
-            case RADIUS:
-                this.handleRadius(player, args);
-                break;
-            case CHECK:
-                this.handleCheck(player);
-                break;
-            case NUKE:
-                this.handleNuke(player);
-                break;
-            default:
-                return false;
+        String subCommand = args[0].toUpperCase();
+
+        if (subCommand.equalsIgnoreCase("query")) {
+
+            this.handleQueryTool(player);
+
+        } else if(subCommand.equalsIgnoreCase("water")) {
+
+            this.handleWaterTool(player);
+
+        } else if (subCommand.equalsIgnoreCase("fire")) {
+
+            this.handleFireTool(player);
+
+        } else if (subCommand.equalsIgnoreCase("snow")) {
+
+            this.handleSnowTool(player);
+
+        } else if (subCommand.equalsIgnoreCase("scan")) {
+
+            this.handleScan(player, args);
+
+        } else if (subCommand.equalsIgnoreCase("radius")) {
+
+            this.handleRadius(player,  args);
+
+        } else if (subCommand.equalsIgnoreCase("check")) {
+
+            this.handleCheck(player);
+
+        } else if (subCommand.equalsIgnoreCase("nuke")) {
+
+            this.handleNuke(player);
+
+        } else {
+            return false;
         }
 
         return true;
@@ -212,6 +219,10 @@ public class ToolCommand extends AbstractCommand {
                 radius = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
                 throw new CommandException("Invalid number for radius.");
+            }
+
+            if (radius > MAX_RADIUS) {
+                throw new CommandException("Maximum value for radius is 100");
             }
 
             tool.setRadius(radius);
