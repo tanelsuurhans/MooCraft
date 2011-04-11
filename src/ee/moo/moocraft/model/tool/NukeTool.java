@@ -92,11 +92,6 @@ public class NukeTool extends Tool {
                 nukeBlock(blockClicked, Material.CLAY_BALL, 4);
                 break;
             
-            case SIGN_POST:
-            case WALL_SIGN:
-                nukeBlock(blockClicked, Material.SIGN);
-                break;
-
             case SNOW:
             case ICE:
                 nukeBlock(blockClicked, Material.AIR);
@@ -111,6 +106,10 @@ public class NukeTool extends Tool {
             case WOOD_STAIRS:
             case COBBLESTONE_STAIRS:
             case FURNACE:
+            case GLOWSTONE:
+            case FENCE:
+            case OBSIDIAN:
+            case BEDROCK:
                 nukeBlock(blockClicked, blockClicked.getType());
                 break;
         }

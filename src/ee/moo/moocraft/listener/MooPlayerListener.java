@@ -44,7 +44,7 @@ public class MooPlayerListener extends PlayerListener {
 
     @Override
     public void onPlayerChat(PlayerChatEvent event) {
-        event.setFormat(ChatColor.DARK_GRAY + "[" + dateFormat.format(new Date()) + "]" + ChatColor.WHITE + " <%s> %s");
+        event.setFormat(ChatColor.WHITE + "[" + dateFormat.format(new Date()) + "]" + ChatColor.WHITE + " <%s> %s");
     }
 
     @Override

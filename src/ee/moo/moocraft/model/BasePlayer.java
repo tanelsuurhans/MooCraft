@@ -165,6 +165,14 @@ public abstract class BasePlayer implements Player {
         player.setItemInHand(item);
     }
 
+    public boolean isSleeping() {
+        return player.isSleeping();
+    }
+
+    public int getSleepTicks() {
+        return player.getSleepTicks();
+    }
+
     public int getHealth() {
         return player.getHealth();
     }

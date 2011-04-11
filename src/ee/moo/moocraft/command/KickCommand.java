@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * User: Tanel Suurhans
@@ -32,7 +33,7 @@ public class KickCommand extends AbstractCommand {
         } else {
 
             String kickMessage = "Kicked from server.";
-            String[] tokens = Arrays.copyOfRange(args, 1, args.length);
+                List<String> tokens = Arrays.asList(Arrays.copyOfRange(args, 1, args.length));
 
             if (args.length > 2) {
                 kickMessage += " Reason: " + StringUtil.join(tokens);

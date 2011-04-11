@@ -59,7 +59,7 @@ public class GodCommand extends AbstractCommand {
             sender.sendMessage(ChatColor.GREEN + "No players with god mode found.");
         } else {
             sender.sendMessage(ChatColor.GREEN + "Players with god mode: " + ChatColor.GOLD + players.size());
-            sender.sendMessage(ChatColor.GRAY + StringUtil.join(players.toArray(), ", "));
+            sender.sendMessage(ChatColor.GRAY + StringUtil.join(players, ", "));
         }
     }
 

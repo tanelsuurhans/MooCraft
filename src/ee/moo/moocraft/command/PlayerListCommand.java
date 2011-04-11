@@ -32,7 +32,7 @@ public class PlayerlistCommand extends AbstractCommand {
         }
 
         commandSender.sendMessage(ChatColor.GREEN + "Players online: " + ChatColor.GOLD + plugin.getServer().getOnlinePlayers().length);
-        commandSender.sendMessage(ChatColor.GRAY + StringUtil.join(players.toArray(), ", "));
+        commandSender.sendMessage(ChatColor.GRAY + StringUtil.join(players, ", "));
 
         return true;
     }
